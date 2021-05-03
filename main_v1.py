@@ -283,11 +283,12 @@ class GUI(QMainWindow):
         sys.exit() 
     
 
-    # Switch between Light and Dark theme (Menu -> View)
+    # Switch between Light and Dark theme (in Menu -> View)
     def SetStyle(self):
         if self.actionTheme.text() == "Dark Theme":
             self.setStyleSheet(open("dark.css").read())
             self.actionTheme.setText("Light Theme")
+            self.statusBar.showMessage("Please do not take screenshots intended for printing in dark mode!", 8000) 
         else:
             self.setStyleSheet(self.DefaultStyle)
             self.actionTheme.setText("Dark Theme")
