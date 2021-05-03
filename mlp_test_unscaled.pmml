@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PMML xmlns="http://www.dmg.org/PMML-4_4" version="4.4.1">
+    <Header copyright="Copyright (c) 2018 Software AG" description="Default Description">
+        <Application name="Nyoka" version="4.4.0"/>
+        <Timestamp>2021-04-30 10:04:40.823645</Timestamp>
+    </Header>
+    <DataDictionary numberOfFields="3">
+        <DataField name="X1" optype="continuous" dataType="double"/>
+        <DataField name="X2" optype="continuous" dataType="double"/>
+        <DataField name="Y" optype="continuous" dataType="double"/>
+    </DataDictionary>
+    <NeuralNetwork modelName="MLPRegressor" functionName="regression" activationFunction="tanh" threshold="0" altitude="1.0">
+        <MiningSchema>
+            <MiningField name="X1" usageType="active" optype="continuous"/>
+            <MiningField name="X2" usageType="active" optype="continuous"/>
+            <MiningField name="Y" usageType="target" optype="continuous"/>
+        </MiningSchema>
+        <Output>
+            <OutputField name="predicted_Y" optype="continuous" dataType="double" feature="predictedValue"/>
+        </Output>
+        <NeuralInputs numberOfInputs="2">
+            <NeuralInput id="X1">
+                <DerivedField optype="continuous" dataType="double">
+                    <FieldRef field="X1"/>
+                </DerivedField>
+            </NeuralInput>
+            <NeuralInput id="X2">
+                <DerivedField optype="continuous" dataType="double">
+                    <FieldRef field="X2"/>
+                </DerivedField>
+            </NeuralInput>
+        </NeuralInputs>
+        <NeuralLayer>
+            <Neuron id="00" bias="-0.6382026743073597">
+                <Con from="X1" weight="0.8842677716287605"/>
+                <Con from="X2" weight="0.0059523046351818085"/>
+            </Neuron>
+            <Neuron id="01" bias="-0.6046429708729751">
+                <Con from="X1" weight="-1.0938733551493118"/>
+                <Con from="X2" weight="1.5077184515033013"/>
+            </Neuron>
+            <Neuron id="02" bias="0.7951579618061005">
+                <Con from="X1" weight="-0.5042131235798604"/>
+                <Con from="X2" weight="-0.4218072281534"/>
+            </Neuron>
+            <Neuron id="03" bias="0.03379919698333258">
+                <Con from="X1" weight="-0.579266384297338"/>
+                <Con from="X2" weight="0.7555201659735502"/>
+            </Neuron>
+        </NeuralLayer>
+        <NeuralLayer>
+            <Neuron id="10" bias="-0.10028672624933792">
+                <Con from="00" weight="-1.1444131520878953"/>
+                <Con from="01" weight="0.20480927964236958"/>
+                <Con from="02" weight="1.9511423972444282"/>
+                <Con from="03" weight="0.5107092645874287"/>
+            </Neuron>
+            <Neuron id="11" bias="-0.8706118638406485">
+                <Con from="00" weight="0.3571652104628603"/>
+                <Con from="01" weight="0.5732430666937768"/>
+                <Con from="02" weight="0.034634245831807915"/>
+                <Con from="03" weight="-1.7810896710839306"/>
+            </Neuron>
+        </NeuralLayer>
+        <NeuralLayer activationFunction="identity">
+            <Neuron id="20" bias="-0.6653449249497916">
+                <Con from="10" weight="-0.6977063121456407"/>
+                <Con from="11" weight="-1.5527960272418926"/>
+            </Neuron>
+        </NeuralLayer>
+        <NeuralOutputs>
+            <NeuralOutput outputNeuron="20">
+                <DerivedField optype="continuous" dataType="double">
+                    <FieldRef field="Y"/>
+                </DerivedField>
+            </NeuralOutput>
+        </NeuralOutputs>
+    </NeuralNetwork>
+</PMML>
