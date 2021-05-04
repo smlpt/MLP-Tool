@@ -1,3 +1,22 @@
+"""
+MLP TOOL - training MLP models and exporting them to PMML
+Copyright (C) 2021 Hochschule Zittau/Görlitz
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses
+
+"""
+
 import sys
 # import os
 
@@ -21,17 +40,20 @@ from PyQt5.QtWidgets import (
     QTableWidgetItem,   # item in the table
     QAbstractScrollArea,# Needed to resize the table widget
     QSizePolicy,        # Adjust dynamic size of widgets and windows
-    QMessageBox,        # Show error messages
-    QStyleFactory       # Access different system themes
+    QMessageBox         # Show error messages
 )
-from PyQt5.QtGui import QFont, QIcon   # change font parameters, add window icon
+from PyQt5.QtGui import (
+    QFont,              # Change font parameters
+    QIcon,              # Add window icon
+    QPixmap             # Show image in label (for about dialog)
+)
 from PyQt5 import uic   # import UI file
 from PyQt5.QtCore import (
     Qt,                 # needed for alignment in Boxlayout
     QObject,            # generic PyQt object
     QThread,            # needed for worker thread for training (to maintain responsive UI)
     pyqtSignal          # emit signals from worker thread to main thread
-    )  
+)  
 
 # method "read_excel" requires the openpyxl library to be installed
 from pandas import DataFrame, read_excel, to_numeric
@@ -241,6 +263,48 @@ class WeightDialog(QDialog):
         self.adjustSize()
 
 
+class AboutDialog(QDialog):
+
+    def __init__(self, style, parent=None):
+
+        super().__init__(parent=parent)
+
+        self.setWindowTitle("About")
+        self.setStyleSheet(style)
+        # Load icon from main GUI
+        self.setWindowIcon(GUI().SetIcon())
+        # Initialize main layout
+        layout = QVBoxLayout()
+        # Create image and text widget
+        labelpic = QLabel()
+        labeltext = QLabel()
+        # Add icon
+        labelpic.setAlignment(Qt.AlignCenter)
+        labelpic.setPixmap(QPixmap("MLP_Tool_Icon_64.png")) 
+        
+        # Align text in the center
+        labeltext.setAlignment(Qt.AlignCenter)
+        labeltext.setText(
+            "<h3>MLP Tool</h3>"
+            "Version 1.1<br>"
+            "This software is used to train simple MLP regression models<br>"
+            "and export them as PMML file.<br><br>"
+            "Copyright:<br>"
+            "2021 Hochschule Zittau/Görlitz<br>"
+            "Institut für Prozesstechnik, Prozessautomatisierung und Messtechnik (IPM)<br>"
+            "Software created by:<br>"
+            "Samue Pantze<br><br>"
+            "License:<br>"
+            "<a href='https://www.gnu.org/licenses/gpl-3.0.html'>GPL v3.0</a>"
+        )
+        layout.addWidget(labelpic)
+        layout.addWidget(labeltext)
+        layout.setSpacing(60)
+        # set margins for left, top, right, bottom
+        layout.setContentsMargins(40, 60, 40, 60)
+        self.setLayout(layout)
+
+
 # Class containing the main functionality
 class GUI(QMainWindow):         
 
@@ -248,7 +312,7 @@ class GUI(QMainWindow):
 
         # Call the inherited classes __init__ method
         super(GUI, self).__init__()     
-        uic.loadUi('mlp_tool_v1.ui', self)
+        uic.loadUi('mlp_tool.ui', self)
         # Add statusbar
         self.statusBar = QStatusBar()
         self.setStatusBar(self.statusBar)
@@ -263,6 +327,7 @@ class GUI(QMainWindow):
         self.actionClose.triggered.connect(self.close)
         self.actionTheme.triggered.connect(self.SetStyle)
         self.actionDocumentation.triggered.connect(self.OpenDocs)
+        self.actionAbout.triggered.connect(self.ShowAbout)
         self.ButtonTrain.clicked.connect(self.Train)
         self.ButtonLossCurve.clicked.connect(self.LossCurve)
         self.ButtonTest.clicked.connect(self.PlotResults)
@@ -645,8 +710,9 @@ class GUI(QMainWindow):
     # Open statistics dialog
     def ShowStats(self):
 
+        # Get deviation data
         self.CalculateDeviation()
-
+        # Create statistics dialog instance and pass data
         Dialog = StatDialog(
             self.Ytrain, self.Ytest,
             self.predtrain, self.predtest,
@@ -661,6 +727,14 @@ class GUI(QMainWindow):
 
         # Create instance of class WeightDialog
         Dialog = WeightDialog(self.mlp, self.styleSheet())
+        Dialog.exec_()
+
+
+    # Open About dialog
+    def ShowAbout(self):
+
+        # Create instance of About dialog and pass the style
+        Dialog = AboutDialog(self.styleSheet())
         Dialog.exec_()
 
 
