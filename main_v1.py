@@ -301,7 +301,7 @@ class GUI(QMainWindow):
 
     def OpenDocs(self):
         # Open Documentation file in new tab
-        webbrowser.open_new_tab("Documentation.html")
+        webbrowser.open_new_tab("Documentation_EN.html")
 
 
     # Writes data from line inputs and comboboxes into attributes
