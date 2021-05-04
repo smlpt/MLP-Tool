@@ -284,24 +284,32 @@ class AboutDialog(QDialog):
         
         # Align text in the center
         labeltext.setAlignment(Qt.AlignCenter)
+        # Allow to open the linked URLs
+        labeltext.setOpenExternalLinks(True)
         labeltext.setText(
-            "<h3>MLP Tool</h3>"
-            "Version 1.1<br>"
+            "<b>MLP Tool</b><br>"
+            "Version 1.1<br><br>"
             "This software is used to train simple MLP regression models<br>"
             "and export them as PMML file.<br><br>"
             "Copyright:<br>"
             "2021 Hochschule Zittau/Görlitz<br>"
             "Institut für Prozesstechnik, Prozessautomatisierung und Messtechnik (IPM)<br>"
+            "Contact: Daniel Fiß, d.fiss@hszg.de<br><br>"
             "Software created by:<br>"
-            "Samue Pantze<br><br>"
+            "Samuel Pantze<br><br>"
             "License:<br>"
-            "<a href='https://www.gnu.org/licenses/gpl-3.0.html'>GPL v3.0</a>"
+            "<a href='https://www.gnu.org/licenses/gpl-3.0.html'>GPL v3.0</a><br><br>"
+            "<a href='https://github.com/RedFalsh/PyQt5_stylesheets'>Dark theme by RedFalsh</a><br><br>"
+            "The following libraries have been used:<br>"
+            "PyQt5 (GPL v3), PyInstaller (GPL v2), Pandas (BSD 3)<br>"
+            "Scikit-Learn (BSD 3), Matplotlib (PSFL), Seaborn (BSD 3)<br>"
+            "NumPy (BSD 3), SciPy (BSD 3), Nyoka (Apache License)"
         )
         layout.addWidget(labelpic)
         layout.addWidget(labeltext)
-        layout.setSpacing(60)
+        layout.setSpacing(40)
         # set margins for left, top, right, bottom
-        layout.setContentsMargins(40, 60, 40, 60)
+        layout.setContentsMargins(20, 40, 20, 40)
         self.setLayout(layout)
 
 
