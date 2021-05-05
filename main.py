@@ -23,8 +23,7 @@ import sys
 # Measure elapsed training time
 from time import perf_counter
 
-# VS Code error "no  name [...] in module PyQt5.QtWidgets" is just a linting error,
-# it does not prevent running the script.
+# ! Potential VS Code errors here can safely be ignored (linting errors).
 # Reason: Pylint does not load any C extensions by default.
 from PyQt5.QtWidgets import (
     QApplication,       # base application      
@@ -40,7 +39,8 @@ from PyQt5.QtWidgets import (
     QTableWidgetItem,   # item in the table
     QAbstractScrollArea,# Needed to resize the table widget
     QSizePolicy,        # Adjust dynamic size of widgets and windows
-    QMessageBox         # Show error messages
+    QMessageBox,        # Show error messages
+    QPushButton         # Generic button type
 )
 from PyQt5.QtGui import (
     QFont,              # Change font parameters
@@ -56,7 +56,7 @@ from PyQt5.QtCore import (
 )  
 
 # method "read_excel" requires the openpyxl library to be installed
-from pandas import DataFrame, read_excel, to_numeric
+from pandas import DataFrame, read_excel, to_numeric, ExcelWriter
 # Print 3D plots
 from mpl_toolkits.mplot3d import Axes3D
 # Print 2D plots
@@ -162,6 +162,8 @@ class WeightDialog(QDialog):
         self.setStyleSheet(style)
         # Load icon from main GUI
         self.setWindowIcon(GUI().SetIcon())
+        # Store mlp variable as attribute
+        self.mlp = mlp
         # Initialize main layout
         layout = QHBoxLayout()
 
@@ -255,12 +257,84 @@ class WeightDialog(QDialog):
         bias_table.resizeRowsToContents()
         bias_table.resizeColumnsToContents()
 
+        # Add sublayout in the right column to add the save button
+        sublayoutR = QVBoxLayout()
+        sublayoutR.addWidget(bias_table, alignment=Qt.AlignTop)
+        # Add save button
+        SaveMatrixButton = QPushButton("Save Matrices")
+        # Connect method to click event
+        SaveMatrixButton.clicked.connect(self.SaveMatrix)
+        sublayoutR.addWidget(SaveMatrixButton, alignment=Qt.AlignBottom)
+
         # Add weight table and bias table to layout
         layout.addWidget(weight_table, alignment=Qt.AlignTop)
-        layout.addWidget(bias_table, alignment=Qt.AlignTop)
+        layout.addLayout(sublayoutR)
 
         self.setLayout(layout)
         self.adjustSize()
+
+    def SaveMatrix(self):
+
+        options = QFileDialog.Options()
+        Address = QFileDialog.getSaveFileName(
+            self,"Save Matrix","","Excel Files (*.xlsx)", options=options)
+
+        # Return immediately if address is empty (user clicked "cancel")
+        if Address[0] == '':
+            return
+
+        # Create writer object
+        # ! Potential VS Code error here can safely be ignored (pylint error)
+        writer = ExcelWriter(Address[0], engine='xlsxwriter')   
+
+        # Create workbook and worksheet
+        workbook = writer.book
+        worksheet = workbook.add_worksheet('Matrices')
+        writer.sheets['Matrices'] = worksheet
+
+        # Initialize worksheet row
+        row = 0
+
+        # Create special formatting for titles
+        title_format = workbook.add_format({
+            'bold': True,
+            'font_size': 12
+        })
+
+        # Loop through weight matrices
+        for L in range(len(self.mlp.coefs_)):
+            # Save transpose of current weight matrix in dataframe
+            df = DataFrame(self.mlp.coefs_[L].T)
+            # Add titles depending on layer
+            if L == 0:
+                worksheet.write(row, 0, f"Input Layer to Layer {L+1}", title_format)
+            elif L == len(self.mlp.coefs_)-1:
+                worksheet.write(row, 0, f"Layer {L} to Output", title_format)
+            else:
+                worksheet.write(row, 0, f"Layer {L} to Layer {L+1}", title_format)
+            # Add current dataframe to writer object
+            df.to_excel(writer, sheet_name='Matrices',
+                startrow=row+1, startcol=0, header=False, index=False)
+            # Increase row index to leave one blank row inbetween matrices
+            row += len(self.mlp.coefs_[L].T) + 2
+            
+        # Loop through bias matrices
+        for B in range(len(self.mlp.intercepts_)):
+            # Save transpose of current bias array in dataframe
+            df = DataFrame(self.mlp.intercepts_[B].T)
+            # Add titles depending on layer
+            if B == len(self.mlp.intercepts_)-1:
+                worksheet.write(row, 0, "Bias for Output", title_format)
+            else:
+                worksheet.write(row, 0, f"Bias for Layer {B+1}", title_format)
+            # Add current dataframe to writer object
+            df.to_excel(writer, sheet_name='Matrices',
+                startrow=row+1, startcol=0, header=False, index=False)
+            # Increase row index to leave one blank row inbetween matrices
+            row += len(self.mlp.intercepts_[B].T) + 2
+            
+        # Save writer object to file
+        writer.save()
 
 
 class AboutDialog(QDialog):
@@ -466,31 +540,33 @@ class GUI(QMainWindow):
         options = QFileDialog.Options()
         Address = QFileDialog.getOpenFileName(
                             self,"Select data", "","Excel Files (*.xlsx)", options=options)
-        # Write data from excel file to local variable
-        if Address[0] != '':
-            try:      
-                data = read_excel(Address[0], header=None, engine='openpyxl')
-            except:
-                QMessageBox.critical(self, "Error", "Failed to open file.")
-                return
-            # Return error message when file is empty
-            if data.empty == True:
-                QMessageBox.warning(self, "Error", "Data file cannot be empty!")
-                raise ImportError("Data file cannot be empty")
-            # Return error message when file has <2 columns
-            if len(data.columns) < 2:
-                QMessageBox.warning(self, "Error", "Data needs at least one column for input and output!")
-                raise ImportError("Data needs at least one column for input and output!")
-            # Only keep rows which are of type float or int
-            # Used to drop the header row if it exists
-            data = data[data[0].apply(lambda x: isinstance(x, (float, int)))]
-            # If header row was dropped, DataFrame is object instead of float. Convert to float:
-            data = data.apply(to_numeric)
-            return Address, data
+
         # Return with basic error if address is empty (user clicked "cancel")
-        else:
+        if Address[0] == '':
             raise BaseException
 
+        # Write data from excel file to local variable
+        try:      
+            data = read_excel(Address[0], header=None, engine='openpyxl')
+        except:
+            QMessageBox.critical(self, "Error", "Failed to open file.")
+            return
+        # Return error message when file is empty
+        if data.empty == True:
+            QMessageBox.warning(self, "Error", "Data file cannot be empty!")
+            raise ImportError("Data file cannot be empty")
+        # Return error message when file has <2 columns
+        if len(data.columns) < 2:
+            QMessageBox.warning(self, "Error",
+                "Data needs at least one column for input and output!")
+            raise ImportError("Data needs at least one column for input and output!")
+        # Only keep rows which are of type float or int
+        # Used to drop the header row if it exists
+        data = data[data[0].apply(lambda x: isinstance(x, (float, int)))]
+        # If header row was dropped, DataFrame type is object. Convert to float:
+        data = data.apply(to_numeric)
+        return Address, data
+        
 
     # Open training data and save feature count in attribute
     def OpenTrainData(self):      
@@ -593,7 +669,7 @@ class GUI(QMainWindow):
             # f"Activation: {self.Activation}\n"
             # f"Solver: {self.Solver}\n"
             f"Max. Epochs: {self.MaxEp}\n"
-            f"Stopping Tolerance: {self.Tol}\n"
+            f"Stopping Tolerance: {self.Tol}"
             # f"Random Seed: {self.Seed}"
         )
 
