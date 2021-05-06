@@ -1,21 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-MLP TOOL - training MLP models and exporting them to PMML
-Copyright (C) 2021 Hochschule Zittau/Görlitz
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <https://www.gnu.org/licenses
--->
 <ui version="4.0">
  <class>MainWindow</class>
  <widget class="QMainWindow" name="MainWindow">
@@ -672,7 +655,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses
     <property name="title">
      <string>?</string>
     </property>
-    <addaction name="actionDocumentation"/>
+    <addaction name="actionDocEN"/>
+    <addaction name="actionDocDE"/>
     <addaction name="actionAbout"/>
    </widget>
    <addaction name="menuDatei"/>
@@ -706,14 +690,19 @@ along with this program.  If not, see <https://www.gnu.org/licenses
     <string>Dark Theme</string>
    </property>
   </action>
-  <action name="actionDocumentation">
+  <action name="actionDocEN">
    <property name="text">
-    <string>Documentation</string>
+    <string>Documentation EN</string>
    </property>
   </action>
   <action name="actionAbout">
    <property name="text">
     <string>About</string>
+   </property>
+  </action>
+  <action name="actionDocDE">
+   <property name="text">
+    <string>Documentation DE</string>
    </property>
   </action>
  </widget>

@@ -2,7 +2,7 @@
 
 This tool provides a graphical interface to the scikit-learn Python library and can be used to train simple neural networks of the class **Multilayer Perceptron** (MLP) for regression problems.
 
-## Theoretical background
+## Theoretical fundamentals
 
 ### Structure
 
@@ -68,7 +68,7 @@ A data preview is printed in the console after loading a dataset.
 
 ### Scaler
 
-If the dataset is not within the range of 0-1 yet, checking this option will scale all data to the minimum and maximum values of the training data and output the factor and the minimum value to the console. These values can then be used in other software to descale the model output back to the original range.  
+If the dataset is not within the range of 0-1 yet, checking this option will scale all values of the training data to fit into the range of 0-1 and output the factor and the minimum value to the console. These values can then be used in other software to scale the model output back to the original range.  
 
 ### Configuration
 
@@ -117,7 +117,7 @@ The following parameters can be configured:
 - **Learning rate:**
   Constant learning rate for stochastic solvers that controls the step size in updating the weights.
 
-### Plotting and statistics
+### Evaluation
 
 After the model training has finished, a number of evaluation options become available:
 
@@ -155,6 +155,8 @@ The same R^2^ score calculation applies to the trendline feature in Microsoft Ex
 #### Weights & Bias
 
 Print a table of all weights in the network model and a table of bias values per neuron.
+
+The weight and bias matrices can be saved to an excel file from within the dialog.
 
 ### Saving
 

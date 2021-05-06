@@ -408,7 +408,8 @@ class GUI(QMainWindow):
         self.ButtonLoadTest.clicked.connect(self.OpenTestData)
         self.actionClose.triggered.connect(self.close)
         self.actionTheme.triggered.connect(self.SetStyle)
-        self.actionDocumentation.triggered.connect(self.OpenDocs)
+        self.actionDocEN.triggered.connect(self.OpenDocsEN)
+        self.actionDocDE.triggered.connect(self.OpenDocsDE)
         self.actionAbout.triggered.connect(self.ShowAbout)
         self.ButtonTrain.clicked.connect(self.Train)
         self.ButtonLossCurve.clicked.connect(self.LossCurve)
@@ -446,9 +447,14 @@ class GUI(QMainWindow):
         return QIcon("MLP_Tool_Icon_64.png")
 
 
-    def OpenDocs(self):
+    def OpenDocsEN(self):
         # Open Documentation file in new tab
         webbrowser.open_new_tab("Documentation_EN.html")
+
+
+    def OpenDocsDE(self):
+        # Open Documentation file in new tab
+        webbrowser.open_new_tab("Documentation_DE.html")
 
 
     # Writes data from line inputs and comboboxes into attributes
@@ -529,7 +535,7 @@ class GUI(QMainWindow):
             f"--------------------\n"
             f"Applied scaling with factors: {self.minmaxscaler.scale_} "
             f"and minimum values: {self.minmaxscaler.data_min_}\n"
-            f"Descale the target column by dividing through the factor and adding the minimum value."
+            f"To scale back: divide the target column through the factor and add the minimum value."
         )
         return data
 
