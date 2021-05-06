@@ -335,6 +335,7 @@ class WeightDialog(QDialog):
             
         # Save writer object to file
         writer.save()
+        print(f"Saved matrices to {Address[0]}.")
 
 
 class AboutDialog(QDialog):
@@ -354,7 +355,7 @@ class AboutDialog(QDialog):
         labeltext = QLabel()
         # Add icon
         labelpic.setAlignment(Qt.AlignCenter)
-        labelpic.setPixmap(QPixmap("MLP_Tool_Icon_64.png")) 
+        labelpic.setPixmap(QPixmap("MLP_Tool_Icon_V2_64.png")) 
         
         # Align text in the center
         labeltext.setAlignment(Qt.AlignCenter)
@@ -444,7 +445,7 @@ class GUI(QMainWindow):
     
     # Load window icon from file
     def SetIcon(self):
-        return QIcon("MLP_Tool_Icon_64.png")
+        return QIcon("MLP_Tool_Icon_V2_64.png")
 
 
     def OpenDocsEN(self):
@@ -831,7 +832,7 @@ class GUI(QMainWindow):
     # Opens file dialog and saves model as PMML file
     def SaveModel(self):            
         options = QFileDialog.Options()
-        fileName = QFileDialog.getSaveFileName(self,"Save model","","PMML Files (*.pmml)", options=options)
+        Address = QFileDialog.getSaveFileName(self,"Save model","","PMML Files (*.pmml)", options=options)
 
         # Add scaler to the pipeline if scaling is enabled
         if self.is_scaled == True:
@@ -850,9 +851,9 @@ class GUI(QMainWindow):
             col_names.append(f'X{i+1}')
 
         # Write pipeline to PMML file
-        if fileName[0] != '':
-            skl_to_pmml(pipeline=pipe, col_names=col_names, target_name='Y',  pmml_f_name=fileName[0])
-            print(f"Saved MLP model to {fileName[0]}")
+        if Address[0] != '':
+            skl_to_pmml(pipeline=pipe, col_names=col_names, target_name='Y',  pmml_f_name=Address[0])
+            print(f"Saved MLP model to {Address[0]}")
 
 
 
