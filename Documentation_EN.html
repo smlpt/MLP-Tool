@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title></title>
+  <title>Documentation MLP Tool</title>
   <style>
   @font-face {
   font-family: octicons-link;
@@ -2279,7 +2279,7 @@ pre[class*="language-"] {
 <body>
   <article class="markdown-body"><h1 class="atx" id="documentation-mlp-tool">Documentation MLP Tool</h1>
 <p>This tool provides a graphical interface to the scikit-learn Python library and can be used to train simple neural networks of the class <strong>Multilayer Perceptron</strong> (MLP) for regression problems.</p>
-<h2 class="atx" id="theoretical-fundamentals">Theoretical fundamentals</h2>
+<div class="toc-container"><p class="toc-title">Contents</p><ul class="toc-list"><li><span><a class="toc-h2" href="#theoretical-fundamentals">Theoretical fundamentals</a><span class="dots"></span></span><ul><li><span><a class="toc-h3" href="#structure">Structure</a><span class="dots"></span></span></li><li><span><a class="toc-h3" href="#activation-functions">Activation functions</a><span class="dots"></span></span><ul><li><span><a class="toc-h4" href="#linear">Linear</a><span class="dots"></span></span></li><li><span><a class="toc-h4" href="#tangens-hyperbolicus">Tangens Hyperbolicus</a><span class="dots"></span></span></li><li><span><a class="toc-h4" href="#sigmoid">Sigmoid</a><span class="dots"></span></span></li><li><span><a class="toc-h4" href="#relu">ReLu</a><span class="dots"></span></span></li></ul></li><li><span><a class="toc-h3" href="#solver">Solver</a><span class="dots"></span></span></li></ul></li><li><span><a class="toc-h2" href="#feature-overview">Feature Overview</a><span class="dots"></span></span><ul><li><span><a class="toc-h3" href="#file-input">File Input</a><span class="dots"></span></span></li><li><span><a class="toc-h3" href="#scaler">Scaler</a><span class="dots"></span></span></li><li><span><a class="toc-h3" href="#configuration">Configuration</a><span class="dots"></span></span></li><li><span><a class="toc-h3" href="#evaluation">Evaluation</a><span class="dots"></span></span><ul><li><span><a class="toc-h4" href="#test-model">Test Model</a><span class="dots"></span></span></li><li><span><a class="toc-h4" href="#loss-curve">Loss Curve</a><span class="dots"></span></span></li><li><span><a class="toc-h4" href="#error-curve">Error Curve</a><span class="dots"></span></span></li><li><span><a class="toc-h4" href="#statistics">Statistics</a><span class="dots"></span></span></li><li><span><a class="toc-h4" href="#weights-and-bias">Weights &amp; Bias</a><span class="dots"></span></span></li></ul></li><li><span><a class="toc-h3" href="#saving">Saving</a><span class="dots"></span></span></li></ul></li><li><span><a class="toc-h2" href="#limitations">Limitations</a><span class="dots"></span></span></li><li><span><a class="toc-h2" href="#troubleshooting">Troubleshooting</a><span class="dots"></span></span></li></ul></div><h2 class="atx" id="theoretical-fundamentals">Theoretical fundamentals</h2>
 <h3 class="atx" id="structure">Structure</h3>
 <p>Excerpt from <a href="https://en.wikipedia.org/wiki/Multilayer_perceptron">Wikipedia</a>:</p>
 <blockquote>
@@ -2306,7 +2306,7 @@ pre[class*="language-"] {
 <p>The first columns contain the input data, the last column is always reserved for the output data. Rows containing strings are automatically dropped during the input process. Files containing less than two columns are rejected, as well as files with mismatching column counts.</p>
 <p>A data preview is printed in the console after loading a dataset.</p>
 <h3 class="atx" id="scaler">Scaler</h3>
-<p>If the dataset is not within the range of 0-1 yet, checking this option will scale all values of the training data to fit into the range of 0-1 and output the factor and the minimum value to the console. These values can then be used in other software to scale the model output back to the original range.  </p>
+<p>If the dataset is not within the range of 0-1 yet, checking this option will scale all values of the training dataset to fit into the range of 0-1 and output the factor and the minimum value in the console. These values can then be used in other software to scale the model output back to the original range.  </p>
 <h3 class="atx" id="configuration">Configuration</h3>
 <p>The following parameters can be configured:
 (see <a href="https://scikit-learn.org/stable/modules/generated/sklearn.neural_network.MLPRegressor.html">scikit-learn documentation</a> for more details)</p>
@@ -2345,10 +2345,10 @@ When training is not improving by this delta value for at least 10 epochs, the t
 The seed value for random number generation, used for weights and bias initialization as well as batch sampling. Setting an integer here results in reproducible results.</p>
 </li>
 <li><p><strong>L2 penalty:</strong>
-The regularization parameter for ridge regression that is used to prevent large weights and over-fitting by adding squared magnitude of coefficients as penalty to the loss function. Large L2 parameter values will lead to under-fitting. <a href="https://towardsdatascience.com/l1-and-l2-regularization-methods-ce25e7fc831c?gi=273b9364d0a7">🡥</a></p>
+The regularization parameter for ridge regression that is used to prevent large weights and overfitting by adding the squared magnitude of coefficients as a penalty to the loss function. Large L2 parameter values will lead to underfitting. <a href="https://towardsdatascience.com/l1-and-l2-regularization-methods-ce25e7fc831c?gi=273b9364d0a7">🡥</a></p>
 </li>
 <li><p><strong>Momentum:</strong>
-Adds a momentum term to the gradient descent by adding adding an exponentially weighed average, which causes the weight updates to accelerate towards a global parameter minimum and prevents getting stuck in local minima. 0.9 is a typical value.</p>
+Adds a momentum term to the gradient descent by adding an exponentially weighed average, which causes the weight updates to accelerate towards a global parameter minimum and prevents getting stuck in local minima. 0.9 is a typical value.</p>
 </li>
 <li><p><strong>Batch size:</strong>
 Size of minibatches for the stochastic solvers (SGD and Adam). "auto" chooses the minimum from 200 or the total number of samples. A size of 1 equals a stochastic gradient descent with weight updates after each presented data sample. A batch size that includes all samples equals the batch gradient descent algorithm, where weights are updated after presenting all samples. Using minibatches (between 1 and all samples) is usually the most robust approach.</p>
@@ -2364,7 +2364,7 @@ Constant learning rate for stochastic solvers that controls the step size in upd
 <h4 class="atx" id="loss-curve">Loss Curve</h4>
 <p>Plots a 2D graph that shows the history of losses over the training period.</p>
 <h4 class="atx" id="error-curve">Error Curve</h4>
-<p>Plots a 2D graph of the difference between target data and predictions. Training and test data are plotted separately.</p>
+<p>Plots a 2D graph of the deviation between target data and predictions. Training and test data are plotted separately.</p>
 <h4 class="atx" id="statistics">Statistics</h4>
 <p>Calculates a number of relevant statistical properties, separated by training and test data. This includes the R<sup>2</sup> score, minimum and maximum error values, absolute mean square error, RMS error, etc.</p>
 <blockquote>
@@ -2380,7 +2380,7 @@ The R<sup>2</sup> score implementation in scikit-learn is defined as:</p>
 <p>The R<sup>2</sup> score ranges from 0 to 1, but can also be negative when the score is calculated from data that haven't been used to train the network model.</p>
 <p>The same R<sup>2</sup> score calculation applies to the trendline feature in Microsoft Excel. </p>
 <h4 class="atx" id="weights-andamp-bias">Weights &amp; Bias</h4>
-<p>Print a table of all weights in the network model and a table of bias values per neuron.</p>
+<p>Prints a table of all weights in the network model and a table of bias values per neuron.</p>
 <p>The weight and bias matrices can be saved to an excel file from within the dialog.</p>
 <h3 class="atx" id="saving">Saving</h3>
 <p>Opens a saving dialog to export the trained model as PMML file for later use in other software.</p>

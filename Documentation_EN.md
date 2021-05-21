@@ -2,6 +2,8 @@
 
 This tool provides a graphical interface to the scikit-learn Python library and can be used to train simple neural networks of the class **Multilayer Perceptron** (MLP) for regression problems.
 
+[TOC]
+
 ## Theoretical fundamentals
 
 ### Structure
@@ -68,7 +70,7 @@ A data preview is printed in the console after loading a dataset.
 
 ### Scaler
 
-If the dataset is not within the range of 0-1 yet, checking this option will scale all values of the training data to fit into the range of 0-1 and output the factor and the minimum value to the console. These values can then be used in other software to scale the model output back to the original range.  
+If the dataset is not within the range of 0-1 yet, checking this option will scale all values of the training dataset to fit into the range of 0-1 and output the factor and the minimum value in the console. These values can then be used in other software to scale the model output back to the original range.  
 
 ### Configuration
 
@@ -106,10 +108,10 @@ The following parameters can be configured:
   The seed value for random number generation, used for weights and bias initialization as well as batch sampling. Setting an integer here results in reproducible results.
 
 - **L2 penalty:**
-  The regularization parameter for ridge regression that is used to prevent large weights and over-fitting by adding squared magnitude of coefficients as penalty to the loss function. Large L2 parameter values will lead to under-fitting. [🡥](https://towardsdatascience.com/l1-and-l2-regularization-methods-ce25e7fc831c?gi=273b9364d0a7)
+  The regularization parameter for ridge regression that is used to prevent large weights and overfitting by adding the squared magnitude of coefficients as a penalty to the loss function. Large L2 parameter values will lead to underfitting. [🡥](https://towardsdatascience.com/l1-and-l2-regularization-methods-ce25e7fc831c?gi=273b9364d0a7)
 
 - **Momentum:**
-  Adds a momentum term to the gradient descent by adding adding an exponentially weighed average, which causes the weight updates to accelerate towards a global parameter minimum and prevents getting stuck in local minima. 0.9 is a typical value.
+  Adds a momentum term to the gradient descent by adding an exponentially weighed average, which causes the weight updates to accelerate towards a global parameter minimum and prevents getting stuck in local minima. 0.9 is a typical value.
 
 - **Batch size:**
   Size of minibatches for the stochastic solvers (SGD and Adam). "auto" chooses the minimum from 200 or the total number of samples. A size of 1 equals a stochastic gradient descent with weight updates after each presented data sample. A batch size that includes all samples equals the batch gradient descent algorithm, where weights are updated after presenting all samples. Using minibatches (between 1 and all samples) is usually the most robust approach.
@@ -131,7 +133,7 @@ Plots a 2D graph that shows the history of losses over the training period.
 
 #### Error Curve
 
-Plots a 2D graph of the difference between target data and predictions. Training and test data are plotted separately.
+Plots a 2D graph of the deviation between target data and predictions. Training and test data are plotted separately.
 
 #### Statistics
 
@@ -154,7 +156,7 @@ The same R^2^ score calculation applies to the trendline feature in Microsoft Ex
 
 #### Weights & Bias
 
-Print a table of all weights in the network model and a table of bias values per neuron.
+Prints a table of all weights in the network model and a table of bias values per neuron.
 
 The weight and bias matrices can be saved to an excel file from within the dialog.
 

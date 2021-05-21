@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title></title>
+  <title>Documentation MLP Tool</title>
   <style>
   @font-face {
   font-family: octicons-link;
@@ -2279,11 +2279,11 @@ pre[class*="language-"] {
 <body>
   <article class="markdown-body"><h1 class="atx" id="dokumentation-mlp-tool">Dokumentation MLP Tool</h1>
 <p>Dieses Tool bietet eine grafische Schnittstelle zur Python-Bibliothek scikit-learn und kann verwendet werden, um einfache neuronale Netze der Klasse <strong>Multilayer Perceptron</strong> (MLP) für Regressionsprobleme zu trainieren.</p>
-<h2 class="atx" id="theoretische-grundlagen">Theoretische Grundlagen</h2>
+<div class="toc-container"><p class="toc-title">Inhalt</p><ul class="toc-list"><li><span><a class="toc-h2" href="#theoretische-grundlagen">Theoretische Grundlagen</a><span class="dots"></span></span><ul><li><span><a class="toc-h3" href="#struktur">Struktur</a><span class="dots"></span></span></li><li><span><a class="toc-h3" href="#aktivierungsfunktionen">Aktivierungsfunktionen</a><span class="dots"></span></span><ul><li><span><a class="toc-h4" href="#linear">Linear</a><span class="dots"></span></span></li><li><span><a class="toc-h4" href="#tangens-hyperbolicus">Tangens Hyperbolicus</a><span class="dots"></span></span></li><li><span><a class="toc-h4" href="#sigmoid">Sigmoid</a><span class="dots"></span></span></li><li><span><a class="toc-h4" href="#relu">ReLu</a><span class="dots"></span></span></li></ul></li><li><span><a class="toc-h3" href="#solver">Solver</a><span class="dots"></span></span></li></ul></li><li><span><a class="toc-h2" href="#funktionsubersicht">Funktionsübersicht</a><span class="dots"></span></span><ul><li><span><a class="toc-h3" href="#dateieingabe">Dateieingabe</a><span class="dots"></span></span></li><li><span><a class="toc-h3" href="#skalierer">Skalierer</a><span class="dots"></span></span></li><li><span><a class="toc-h3" href="#konfiguration">Konfiguration</a><span class="dots"></span></span></li><li><span><a class="toc-h3" href="#auswertung">Auswertung</a><span class="dots"></span></span><ul><li><span><a class="toc-h4" href="#modell-testen">Modell testen</a><span class="dots"></span></span></li><li><span><a class="toc-h4" href="#lernkurve">Lernkurve</a><span class="dots"></span></span></li><li><span><a class="toc-h4" href="#fehlerkurve">Fehlerkurve</a><span class="dots"></span></span></li><li><span><a class="toc-h4" href="#statistiken">Statistiken</a><span class="dots"></span></span></li><li><span><a class="toc-h4" href="#gewichte-and-bias">Gewichte &amp; Bias</a><span class="dots"></span></span></li></ul></li><li><span><a class="toc-h3" href="#speichern">Speichern</a><span class="dots"></span></span></li></ul></li><li><span><a class="toc-h2" href="#einschrankungen">Einschränkungen</a><span class="dots"></span></span></li><li><span><a class="toc-h2" href="#fehlerbehebung">Fehlerbehebung</a><span class="dots"></span></span></li></ul></div><h2 class="atx" id="theoretische-grundlagen">Theoretische Grundlagen</h2>
 <h3 class="atx" id="struktur">Struktur</h3>
 <p>Auszug aus <a href="https://en.wikipedia.org/wiki/Multilayer_perceptron">Wikipedia</a>:</p>
 <blockquote>
-<p>Ein MLP besteht aus mindestens drei <a title="Schicht (deep learning)" href="https://en.wikipedia.org/wiki/Layer_(deep_learning)">Schichten</a> von Knoten: einer Eingabe-<a title="Schicht (deep learning)" href="https://en.wikipedia.org/wiki/Layer_(deep_learning)">Schicht</a>, einer versteckten <a title="Schicht (deep learning)" href="https://en.wikipedia.org/wiki/Layer_(deep_learning)">Schicht</a> und einer Ausgabe-<a title="Schicht (deep learning)" href="https://en.wikipedia.org/wiki/Layer_(deep_learning)">Schicht</a>. Mit Ausnahme der Eingabeknoten ist jeder Knoten ein Neuron, das eine nichtlineare <a title="Aktivierungsfunktion" href="https://en.wikipedia.org/wiki/Activation_function">Aktivierungsfunktion</a> verwendet. [...] Es kann Daten unterscheiden, die nicht [linear separierbar](<a href="https://en.wikipedia.org/wiki/Linear_separability">Linear separability - Wikipedia</a> "Linear separability") sind. [...]</p>
+<p>Ein MLP besteht aus mindestens drei <a title="Schicht (deep learning)" href="https://en.wikipedia.org/wiki/Layer_(deep_learning)">Schichten</a> von Knoten: einer Eingabe-<a title="Schicht (deep learning)" href="https://en.wikipedia.org/wiki/Layer_(deep_learning)">Schicht</a>, einer versteckten <a title="Schicht (deep learning)" href="https://en.wikipedia.org/wiki/Layer_(deep_learning)">Schicht</a> und einer Ausgabe-<a title="Schicht (deep learning)" href="https://en.wikipedia.org/wiki/Layer_(deep_learning)">Schicht</a>. Mit Ausnahme der Eingabeknoten ist jeder Knoten ein Neuron, das eine nichtlineare <a title="Aktivierungsfunktion" href="https://en.wikipedia.org/wiki/Activation_function">Aktivierungsfunktion</a> verwendet. [...] Es kann Daten unterscheiden, die nicht <a href="https://en.wikipedia.org/wiki/Linear_separability">linear separierbar</a> sind. [...]</p>
 <p>Da MLPs voll vernetzt sind, verbindet sich jeder Knoten in einer Schicht über ein bestimmtes Gewicht <span class="katex"><span class="katex-mathml"></span><span aria-hidden="true" class="katex-html"><span class="base"><span style="height:0.716668em;vertical-align:-0.286108em;" class="strut"></span><span class="mord"><span style="margin-right:0.03588em;" class="mord mathnormal">ω</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span style="height:0.311664em;" class="vlist"><span style="top:-2.5500000000000003em;margin-left:-0.03588em;margin-right:0.05em;"><span style="height:2.7em;" class="pstrut"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span style="margin-right:0.05724em;" class="mord mathnormal mtight">j</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span style="height:0.286108em;" class="vlist"><span></span></span></span></span></span></span></span></span></span> mit jedem Knoten in der folgenden Schicht.</p>
 </blockquote>
 <h3 class="atx" id="aktivierungsfunktionen">Aktivierungsfunktionen</h3>
@@ -2306,7 +2306,7 @@ pre[class*="language-"] {
 <p>Die ersten Spalten enthalten die Eingabedaten, die letzte Spalte ist immer für die Ausgabedaten reserviert. Zeilen, die Zeichenketten enthalten, werden während des Eingabevorgangs automatisch verworfen. Dateien, die weniger als zwei Spalten enthalten, werden verworfen, ebenso wie Dateien mit nicht übereinstimmender Spaltenanzahl.</p>
 <p>Nach dem Laden eines Datensatzes wird eine Datenvorschau in der Konsole ausgegeben.</p>
 <h3 class="atx" id="skalierer">Skalierer</h3>
-<p>Wenn der Datensatz noch nicht im Bereich von 0-1 liegt, werden durch Aktivieren dieser Option alle Werte der Trainingsdaten so skaliert, dass sie in den Bereich von 0-1 passen und der Faktor und der Minimalwert werden auf der Konsole ausgegeben. Diese Werte können dann in anderer Software verwendet werden, um die Ausgabewerte wieder auf den ursprünglichen Bereich zu skalieren.</p>
+<p>Wenn der Datensatz noch nicht im Bereich von 0-1 liegt, werden durch Aktivieren dieser Option alle Werte der Trainingsdaten so skaliert, dass sie in den Bereich von 0-1 passen und der Faktor und der Minimalwert werden in der Konsole ausgegeben. Diese Werte können dann in anderer Software verwendet werden, um die Ausgabewerte wieder auf den ursprünglichen Bereich zu skalieren.</p>
 <h3 class="atx" id="konfiguration">Konfiguration</h3>
 <p>Die folgenden Parameter können konfiguriert werden:
 (siehe <a href="https://scikit-learn.org/stable/modules/generated/sklearn.neural_network.MLPRegressor.html">scikit-learn documentation</a> für weitere Informationen)</p>
@@ -2326,9 +2326,9 @@ Verfügbare Solver sind:</p>
 <ul>
 <li><p><a href="https://arxiv.org/abs/1412.6980">Adam</a>: Adaptive Moment Estimation. Speichert den exponentiell abfallenden Durchschnitt der vergangenen quadratischen Gradienten und die Gradienten zur adaptiven Berechnung der Lernraten. <a href="https://ruder.io/optimizing-gradient-descent/">🡥</a></p>
 </li>
-<li><p>SGD: Klassischer Gradientenabstiegsalgorithmus mit konfigurierbarer Stapelgröße.</p>
+<li><p>SGD: Klassischer Gradientenabstiegsalgorithmus mit konfigurierbarer Batchgröße.</p>
 </li>
-<li><p>L-BFGS: Implementierung des <a href="https://en.wikipedia.org/wiki/Broyden%E2%80%93Fletcher%E2%80%93Goldfarb%E2%80%93Shanno_algorithm">Broyden-Fletcher-Goldfarb-Shanno-Algorithmus</a> für begrenzten Speicher, ein Quasi-Newton-Verfahren, das eine Schätzung der inversen <a href="https://de.wikipedia.org/wiki/Hesse-Matrix">Hesse-Matrix</a> (Ableitungen zweiter Ordnung) zur Aktualisierung der Gewichte verwendet. Konvergiert sehr schnell für kleinere Datensätze. Dieser Solver besitzt keine Lernkurve.</p>
+<li><p>L-BFGS: Implementierung des <a href="https://en.wikipedia.org/wiki/Broyden%E2%80%93Fletcher%E2%80%93Goldfarb%E2%80%93Shanno_algorithm">Broyden-Fletcher-Goldfarb-Shanno-Algorithmus</a> für begrenzte Speicherkapazität, ein Quasi-Newton-Verfahren, das eine Schätzung der inversen <a href="https://de.wikipedia.org/wiki/Hesse-Matrix">Hesse-Matrix</a> (Ableitungen zweiter Ordnung) zur Aktualisierung der Gewichte verwendet. Konvergiert sehr schnell für kleinere Datensätze. Dieser Solver besitzt keine Lernkurve.</p>
 </li>
 </ul>
 </li>
@@ -2339,7 +2339,7 @@ Das Training wird nach Erreichen dieser Anzahl von Epochen oder nach Erreichen d
 Wenn sich das Training mindestens 10 Epochen lang nicht um diesen Deltawert verbessert, gilt das Training als beendet.</p>
 </li>
 <li><p><strong>Zufallswert:</strong>
-Der Seed-Wert für die Zufallszahlengenerierung, der für die Gewichte und die Bias-Initialisierung sowie für das Batch Sampling verwendet wird. Wenn hier ein ganzzahliger Wert eingestellt wird, führt dies zu reproduzierbaren Ergebnissen.</p>
+Der Seed-Wert für die Generierung von Zufallszahlen, die für die Gewichte und die Bias-Initialisierung sowie für das Batch Sampling verwendet werden. Wenn hier ein ganzzahliger Wert eingestellt wird, führt dies zu reproduzierbaren Ergebnissen.</p>
 </li>
 <li><p><strong>L2-Penalty:</strong>
 Der Regularisierungsparameter für die Ridge-Regression, der verwendet wird, um große Gewichte und Overfitting zu verhindern, indem der quadrierte Betrag der Koeffizienten als Penalty zur Verlustfunktion hinzugefügt wird. Große L2-Parameterwerte führen zu Underfitting. <a href="https://towardsdatascience.com/l1-and-l2-regularization-methods-ce25e7fc831c?gi=273b9364d0a7">🡥</a></p>
@@ -2358,8 +2358,8 @@ Konstante Lernrate für stochastische Solver, die die Schrittgröße beim Aktual
 <p>Nach Abschluss des Trainings des Modells stehen eine Reihe von Auswertungsmöglichkeiten zur Verfügung:</p>
 <h4 class="atx" id="modell-testen">Modell testen</h4>
 <p>Stellt eine Punktwolke aus den realen und den vorhergesagten Werten im 3D-Raum dar. Diese Option ist nur für zweidimensionale Eingabedaten verfügbar.</p>
-<h4 class="atx" id="verlustkurve">Verlustkurve</h4>
-<p>Zeichnet ein 2D-Diagramm, das den Verlauf der Verluste über den Trainingszeitraum anzeigt.</p>
+<h4 class="atx" id="lernkurve">Lernkurve</h4>
+<p>Stellt ein 2D-Diagramm dar, das den Verlauf des Lernfehlers über den Trainingszeitraum anzeigt.</p>
 <h4 class="atx" id="fehlerkurve">Fehlerkurve</h4>
 <p>Stellt ein 2D-Diagramm der Differenz zwischen den Zieldaten und den Vorhersagen dar. Trainings- und Testdaten werden getrennt dargestellt.</p>
 <h4 class="atx" id="statistiken">Statistiken</h4>
@@ -2377,16 +2377,16 @@ Die Implementierung des R<sup>2</sup>-Scores in scikit-learn ist wie folgt defin
 <p>Der R<sup>2</sup>-Score reicht von 0 bis 1, kann aber auch negativ sein, wenn der Score aus Daten berechnet wird, die nicht zum Trainieren des Netzwerks verwendet wurden.</p>
 <p>Die gleiche Berechnung des R<sup>2</sup>-Scores gilt für die Trendlinienfunktion in Microsoft Excel.</p>
 <h4 class="atx" id="gewichte-andamp-bias">Gewichte &amp; Bias</h4>
-<p>Gibt eine Tabelle mit allen Gewichten im Netzwerk und eine Tabelle mit den Bias-Werten pro Neuron aus.</p>
+<p>Gibt eine Tabelle mit allen Gewichten im Netzwerk und eine Tabelle mit den Bias-Werten für jedes Neuron aus.</p>
 <p>Die Gewichts- und Bias-Matrizen können aus dem Dialog heraus in einer Excel-Datei gespeichert werden.</p>
 <h3 class="atx" id="speichern">Speichern</h3>
 <p>Öffnet einen Speicherdialog, um das trainierte Modell als PMML-Datei für die spätere Verwendung in anderer Software zu exportieren.</p>
 <h2 class="atx" id="einschrankungen">Einschränkungen</h2>
-<p>Neuronale Netze gibt es in einer großen Vielfalt von Typen und Anwendungsszenarien. Dieses Tool bietet nur die Funktionalität für eine bestimmte Klasse von Modellen, das Multilayer-Perceptron. Dieses wird auch oft für Klassifizierungsprobleme verwendet, allerdings funktioniert dieses Tool nur für Regressionsprobleme.</p>
+<p>Neuronale Netze gibt es in einer großen Vielfalt von Typen und Anwendungsszenarien. Mit diesem Tool kann allerdings nur eine bestimmte Klasse von Modellen trainiert werden, das Multilayer-Perceptron. Dieses wird zwar auch oft für Klassifizierungsprobleme verwendet, allerdings funktioniert das Tool nur für Regressionsprobleme.</p>
 <p>Die Eingabedaten können eine beliebige Anzahl von Dimensionen haben, die Ausgabe ist jedoch immer eindimensional, da dies das am häufigsten verwendete Anwendungsszenario ist. Da dieses Tool auf die MLPRegressor-Methode aus der scikit-learn-Bibliothek zurückgreift, ist die Implementierung von mehr als einer Ausgabe derzeit nicht möglich.</p>
 <p>Aufgrund der relativ kleinen Datensätze und der internen seriellen Verarbeitung ist GPU-Beschleunigung für dieses Tool (oder scikit-learn im Allgemeinen) nicht verfügbar. Schnelle CPU-Taktraten helfen, die Trainingszeit zu verringern.</p>
 <p>Die Modelloptimierung ist aufgrund der verwendeten MLPRegressor-Methode stark eingeschränkt. Es ist kein Pruning oder Dropout verfügbar. Dennoch sollte die Anpassung der Modellparameter in den meisten Fällen zu zufriedenstellenden Ergebnissen führen.</p>
-<p>Dieses Tool bietet keine Funktionen zur Datenvorverarbeitung, abgesehen von der Skalierung der Werte auf 0 bis 1. Der Benutzer ist für die Bereinigung des Datensatzes und die Überprüfung auf fehlerhafte Datenpunkte verantwortlich.</p>
+<p>Dieses Tool bietet keine Funktionen zur Datenvorverarbeitung, abgesehen von der Skalierung der Werte auf 0 bis 1. Der Benutzer ist für die Bereinigung des Datensatzes und die Überprüfung auf fehlerhafte Datenpunkte selbst verantwortlich.</p>
 <h2 class="atx" id="fehlerbehebung">Fehlerbehebung</h2>
 <p>Die meisten Anwendungsfehler sollten vom Tool selbst abgefangen werden und das Problem über eine Warnmeldung erklären. Dazu gehören:</p>
 <ul>

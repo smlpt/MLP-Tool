@@ -2,13 +2,15 @@
 
 Dieses Tool bietet eine grafische Schnittstelle zur Python-Bibliothek scikit-learn und kann verwendet werden, um einfache neuronale Netze der Klasse **Multilayer Perceptron** (MLP) für Regressionsprobleme zu trainieren.
 
+[TOC]
+
 ## Theoretische Grundlagen
 
 ### Struktur
 
 Auszug aus [Wikipedia](https://en.wikipedia.org/wiki/Multilayer_perceptron):
 
-> Ein MLP besteht aus mindestens drei [Schichten](https://en.wikipedia.org/wiki/Layer_(deep_learning) "Schicht (deep learning)") von Knoten: einer Eingabe-[Schicht](https://en.wikipedia.org/wiki/Layer_(deep_learning) "Schicht (deep learning)"), einer versteckten [Schicht](https://en.wikipedia.org/wiki/Layer_(deep_learning) "Schicht (deep learning)") und einer Ausgabe-[Schicht](https://en.wikipedia.org/wiki/Layer_(deep_learning) "Schicht (deep learning)"). Mit Ausnahme der Eingabeknoten ist jeder Knoten ein Neuron, das eine nichtlineare [Aktivierungsfunktion](https://en.wikipedia.org/wiki/Activation_function "Aktivierungsfunktion") verwendet. [...] Es kann Daten unterscheiden, die nicht [linear separierbar]([Linear separability - Wikipedia](https://en.wikipedia.org/wiki/Linear_separability) "Linear separability") sind. [...]
+> Ein MLP besteht aus mindestens drei [Schichten](https://en.wikipedia.org/wiki/Layer_(deep_learning) "Schicht (deep learning)") von Knoten: einer Eingabe-[Schicht](https://en.wikipedia.org/wiki/Layer_(deep_learning) "Schicht (deep learning)"), einer versteckten [Schicht](https://en.wikipedia.org/wiki/Layer_(deep_learning) "Schicht (deep learning)") und einer Ausgabe-[Schicht](https://en.wikipedia.org/wiki/Layer_(deep_learning) "Schicht (deep learning)"). Mit Ausnahme der Eingabeknoten ist jeder Knoten ein Neuron, das eine nichtlineare [Aktivierungsfunktion](https://en.wikipedia.org/wiki/Activation_function "Aktivierungsfunktion") verwendet. [...] Es kann Daten unterscheiden, die nicht [linear separierbar](https://en.wikipedia.org/wiki/Linear_separability) sind. [...]
 > 
 > Da MLPs voll vernetzt sind, verbindet sich jeder Knoten in einer Schicht über ein bestimmtes Gewicht $\omega_{ij}$ mit jedem Knoten in der folgenden Schicht.
 
@@ -68,7 +70,7 @@ Nach dem Laden eines Datensatzes wird eine Datenvorschau in der Konsole ausgegeb
 
 ### Skalierer
 
-Wenn der Datensatz noch nicht im Bereich von 0-1 liegt, werden durch Aktivieren dieser Option alle Werte der Trainingsdaten so skaliert, dass sie in den Bereich von 0-1 passen und der Faktor und der Minimalwert werden auf der Konsole ausgegeben. Diese Werte können dann in anderer Software verwendet werden, um die Ausgabewerte wieder auf den ursprünglichen Bereich zu skalieren.
+Wenn der Datensatz noch nicht im Bereich von 0-1 liegt, werden durch Aktivieren dieser Option alle Werte der Trainingsdaten so skaliert, dass sie in den Bereich von 0-1 passen und der Faktor und der Minimalwert werden in der Konsole ausgegeben. Diese Werte können dann in anderer Software verwendet werden, um die Ausgabewerte wieder auf den ursprünglichen Bereich zu skalieren.
 
 ### Konfiguration
 
@@ -89,9 +91,9 @@ Die folgenden Parameter können konfiguriert werden:
   
   - [Adam](https://arxiv.org/abs/1412.6980): Adaptive Moment Estimation. Speichert den exponentiell abfallenden Durchschnitt der vergangenen quadratischen Gradienten und die Gradienten zur adaptiven Berechnung der Lernraten. [🡥](https://ruder.io/optimizing-gradient-descent/)
   
-  - SGD: Klassischer Gradientenabstiegsalgorithmus mit konfigurierbarer Stapelgröße.
+  - SGD: Klassischer Gradientenabstiegsalgorithmus mit konfigurierbarer Batchgröße.
   
-  - L-BFGS: Implementierung des [Broyden-Fletcher-Goldfarb-Shanno-Algorithmus](https://en.wikipedia.org/wiki/Broyden%E2%80%93Fletcher%E2%80%93Goldfarb%E2%80%93Shanno_algorithm) für begrenzten Speicher, ein Quasi-Newton-Verfahren, das eine Schätzung der inversen [Hesse-Matrix](https://de.wikipedia.org/wiki/Hesse-Matrix) (Ableitungen zweiter Ordnung) zur Aktualisierung der Gewichte verwendet. Konvergiert sehr schnell für kleinere Datensätze. Dieser Solver besitzt keine Lernkurve.
+  - L-BFGS: Implementierung des [Broyden-Fletcher-Goldfarb-Shanno-Algorithmus](https://en.wikipedia.org/wiki/Broyden%E2%80%93Fletcher%E2%80%93Goldfarb%E2%80%93Shanno_algorithm) für begrenzte Speicherkapazität, ein Quasi-Newton-Verfahren, das eine Schätzung der inversen [Hesse-Matrix](https://de.wikipedia.org/wiki/Hesse-Matrix) (Ableitungen zweiter Ordnung) zur Aktualisierung der Gewichte verwendet. Konvergiert sehr schnell für kleinere Datensätze. Dieser Solver besitzt keine Lernkurve.
 
 - **Maximale Anzahl von Epochen:**
   Das Training wird nach Erreichen dieser Anzahl von Epochen oder nach Erreichen der angegebenen Toleranz beendet.
@@ -100,7 +102,7 @@ Die folgenden Parameter können konfiguriert werden:
   Wenn sich das Training mindestens 10 Epochen lang nicht um diesen Deltawert verbessert, gilt das Training als beendet.
 
 - **Zufallswert:**
-  Der Seed-Wert für die Zufallszahlengenerierung, der für die Gewichte und die Bias-Initialisierung sowie für das Batch Sampling verwendet wird. Wenn hier ein ganzzahliger Wert eingestellt wird, führt dies zu reproduzierbaren Ergebnissen.
+  Der Seed-Wert für die Generierung von Zufallszahlen, die für die Gewichte und die Bias-Initialisierung sowie für das Batch Sampling verwendet werden. Wenn hier ein ganzzahliger Wert eingestellt wird, führt dies zu reproduzierbaren Ergebnissen.
 
 - **L2-Penalty:**
   Der Regularisierungsparameter für die Ridge-Regression, der verwendet wird, um große Gewichte und Overfitting zu verhindern, indem der quadrierte Betrag der Koeffizienten als Penalty zur Verlustfunktion hinzugefügt wird. Große L2-Parameterwerte führen zu Underfitting. [🡥](https://towardsdatascience.com/l1-and-l2-regularization-methods-ce25e7fc831c?gi=273b9364d0a7)
@@ -122,9 +124,9 @@ Nach Abschluss des Trainings des Modells stehen eine Reihe von Auswertungsmögli
 
 Stellt eine Punktwolke aus den realen und den vorhergesagten Werten im 3D-Raum dar. Diese Option ist nur für zweidimensionale Eingabedaten verfügbar.
 
-#### Verlustkurve
+#### Lernkurve
 
-Zeichnet ein 2D-Diagramm, das den Verlauf der Verluste über den Trainingszeitraum anzeigt.
+Stellt ein 2D-Diagramm dar, das den Verlauf des Lernfehlers über den Trainingszeitraum anzeigt.
 
 #### Fehlerkurve
 
@@ -151,7 +153,7 @@ Die gleiche Berechnung des R^2^-Scores gilt für die Trendlinienfunktion in Micr
 
 #### Gewichte & Bias
 
-Gibt eine Tabelle mit allen Gewichten im Netzwerk und eine Tabelle mit den Bias-Werten pro Neuron aus.
+Gibt eine Tabelle mit allen Gewichten im Netzwerk und eine Tabelle mit den Bias-Werten für jedes Neuron aus.
 
 Die Gewichts- und Bias-Matrizen können aus dem Dialog heraus in einer Excel-Datei gespeichert werden.
 
@@ -161,7 +163,7 @@ Die Gewichts- und Bias-Matrizen können aus dem Dialog heraus in einer Excel-Dat
 
 ## Einschränkungen
 
-Neuronale Netze gibt es in einer großen Vielfalt von Typen und Anwendungsszenarien. Dieses Tool bietet nur die Funktionalität für eine bestimmte Klasse von Modellen, das Multilayer-Perceptron. Dieses wird auch oft für Klassifizierungsprobleme verwendet, allerdings funktioniert dieses Tool nur für Regressionsprobleme.
+Neuronale Netze gibt es in einer großen Vielfalt von Typen und Anwendungsszenarien. Mit diesem Tool kann allerdings nur eine bestimmte Klasse von Modellen trainiert werden, das Multilayer-Perceptron. Dieses wird zwar auch oft für Klassifizierungsprobleme verwendet, allerdings funktioniert das Tool nur für Regressionsprobleme.
 
 Die Eingabedaten können eine beliebige Anzahl von Dimensionen haben, die Ausgabe ist jedoch immer eindimensional, da dies das am häufigsten verwendete Anwendungsszenario ist. Da dieses Tool auf die MLPRegressor-Methode aus der scikit-learn-Bibliothek zurückgreift, ist die Implementierung von mehr als einer Ausgabe derzeit nicht möglich.
 
@@ -169,7 +171,7 @@ Aufgrund der relativ kleinen Datensätze und der internen seriellen Verarbeitung
 
 Die Modelloptimierung ist aufgrund der verwendeten MLPRegressor-Methode stark eingeschränkt. Es ist kein Pruning oder Dropout verfügbar. Dennoch sollte die Anpassung der Modellparameter in den meisten Fällen zu zufriedenstellenden Ergebnissen führen.
 
-Dieses Tool bietet keine Funktionen zur Datenvorverarbeitung, abgesehen von der Skalierung der Werte auf 0 bis 1. Der Benutzer ist für die Bereinigung des Datensatzes und die Überprüfung auf fehlerhafte Datenpunkte verantwortlich.
+Dieses Tool bietet keine Funktionen zur Datenvorverarbeitung, abgesehen von der Skalierung der Werte auf 0 bis 1. Der Benutzer ist für die Bereinigung des Datensatzes und die Überprüfung auf fehlerhafte Datenpunkte selbst verantwortlich.
 
 ## Fehlerbehebung
 
