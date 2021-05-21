@@ -18,6 +18,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses
 """
 
 import sys
+import os.path
 
 # Measure elapsed training time
 from time import perf_counter
@@ -36,7 +37,8 @@ from PyQt5.QtWidgets import (
     QAbstractScrollArea,# Needed to resize the table widget
     QSizePolicy,        # Adjust dynamic size of widgets and windows
     QMessageBox,        # Show error messages
-    QPushButton         # Generic button type
+    QPushButton,        # Generic button type
+    QWidget
 )
 from PyQt5.QtGui import (
     QFont,              # Change font parameters
@@ -71,12 +73,44 @@ import webbrowser
 
 
 # Main Function
-def main():         
+def main():
 
-    app = QApplication(sys.argv)    # Create an instance of QtWidgets.QApplication
-    window = GUI()    # Create an instance of the interface class
+    app = QApplication(sys.argv)    # Create an instance of QtWidgets.QApplication 
+
+    # Create list for all necessary files
+    files = [
+        'mlp_tool.ui',
+        'MLP_Tool_Icon_V2_64.png',
+        'Documentation_DE.html',
+        'Documentation_EN.html',
+        'dark.qss'
+    ]
+    # Check if all files are present
+    for file in files:
+        if not os.path.exists(file):
+            # Create messagebox and populate it with text
+            message = QMessageBox()
+            message.setIcon(QMessageBox.Warning)
+            message.setWindowTitle("Warning")
+            message.setText(
+                "One or more program files could not be found,\n"
+                "the program might not work as intended.\n"
+                "Try downloading the program again.")
+            message.setStandardButtons(QMessageBox.Ignore | QMessageBox.Abort)
+            # Show messagebox and await user response
+            ReturnValue = message.exec_()
+            # Exit program if user clicked "abort"
+            if ReturnValue == QMessageBox.Abort:
+                exit()
+            # Continue to main GUI when user clicked "ignore"
+            if ReturnValue == QMessageBox.Ignore:
+                break
+
+    # Create an instance of the interface class
+    window = GUI()    
     window.show()
-    sys.exit(app.exec_())       # Start the application
+    # Start the application
+    sys.exit(app.exec_())       
 
 
 # Class containing the statistics dialog
