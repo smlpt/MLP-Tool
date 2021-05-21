@@ -414,6 +414,8 @@ class GUI(QMainWindow):
         # Connectors for user input events, e.g. pressing buttons
         self.ButtonLoadTrain.clicked.connect(self.OpenTrainData)
         self.ButtonLoadTest.clicked.connect(self.OpenTestData)
+        self.actionOpenTrain.triggered.connect(self.OpenTrainData)
+        self.actionOpenTest.triggered.connect(self.OpenTestData)
         self.actionClose.triggered.connect(self.close)
         self.actionTheme.triggered.connect(self.SetStyle)
         self.actionDocEN.triggered.connect(self.OpenDocsEN)
@@ -442,7 +444,7 @@ class GUI(QMainWindow):
     # Switch between Light and Dark theme (in Menu -> View)
     def SetStyle(self):
         if self.actionTheme.text() == "Dark Theme":
-            self.setStyleSheet(open("dark.css").read())
+            self.setStyleSheet(open("dark.qss").read())
             self.actionTheme.setText("Light Theme")
             # Show dar mode warning in statusbar
             self.statusBar.showMessage("Please do not take screenshots intended for printing in dark mode!", 8000) 
