@@ -302,7 +302,7 @@ class WeightDialog(QDialog):
         # Connect "SaveMatrix" method to click event
         SaveMatrixButton.clicked.connect(self.SaveMatrix)
         sublayoutR.addWidget(SaveMatrixButton, alignment=Qt.AlignBottom)
-
+        
         # Add weight table and bias table to layout
         layout.addWidget(weight_table, alignment=Qt.AlignTop)
         layout.addLayout(sublayoutR)
@@ -509,7 +509,7 @@ class GUI(QMainWindow):
 
         # Dictionary to convert the combobox strings to activation parameters
         ActivationDict = {             
-            "ReLu": "relu",
+            "ReLU": "relu",
             "Tanh": "tanh",
             "Linear": "identity",
             "Sigmoid": "logistic"
@@ -541,8 +541,10 @@ class GUI(QMainWindow):
             self.Seed = int(self.LineSeed.text())
             self.L2 = float(self.LineL2.text())
             self.Momentum = float(self.LineMomentum.text())
+            # Try to evaluate batch value as integer
             try:
                 self.Batch = eval(self.LineBatch.text())
+            # If batch does not contain an int, write it as a string
             except:
                 self.Batch = self.LineBatch.text()
             self.LearnRate = float(self.LineLearnRate.text())
