@@ -260,7 +260,7 @@
         <item row="1" column="0">
          <widget class="QLabel" name="label_2">
           <property name="toolTip">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Activation function for the hidden layers.&lt;/p&gt;&lt;ul style=&quot;margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;&quot;&gt;&lt;li style=&quot; margin-top:0px; margin-bottom:5px; margin-left:10px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;‘Linear’, no-op activation, useful to implement linear bottleneck, returns f(x) = x&lt;/li&gt;&lt;li style=&quot; margin-top:0px; margin-bottom:5px; margin-left:10px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;‘Sigmoid’, the logistic sigmoid function, returns f(x) = 1 / (1 + exp(-x)).&lt;/li&gt;&lt;li style=&quot; margin-top:0px; margin-bottom:5px; margin-left:10px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;‘Tanh’, the hyperbolic tan function, returns f(x) = tanh(x).&lt;/li&gt;&lt;li style=&quot; margin-top:0px; margin-bottom:5px; margin-left:10px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;‘ReLu’, the rectified linear unit function, returns f(x) = max(0, x)&lt;/li&gt;&lt;/ul&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Activation function for the hidden layers.&lt;/p&gt;&lt;ul style=&quot;margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;&quot;&gt;&lt;li style=&quot; margin-top:0px; margin-bottom:5px; margin-left:10px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;‘Linear’, no-op activation, useful to implement linear bottleneck, returns f(x) = x&lt;/li&gt;&lt;li style=&quot; margin-top:0px; margin-bottom:5px; margin-left:10px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;‘Sigmoid’, the logistic sigmoid function, returns f(x) = 1 / (1 + exp(-x)).&lt;/li&gt;&lt;li style=&quot; margin-top:0px; margin-bottom:5px; margin-left:10px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;‘Tanh’, the hyperbolic tan function, returns f(x) = tanh(x).&lt;/li&gt;&lt;li style=&quot; margin-top:0px; margin-bottom:5px; margin-left:10px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;‘ReLU’, the rectified linear unit function, returns f(x) = max(0, x)&lt;/li&gt;&lt;/ul&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
            <string>Activation:</string>
@@ -273,11 +273,11 @@
            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Activation function for the hidden layers.&lt;/p&gt;&lt;ul style=&quot;margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; -qt-list-indent: 1;&quot;&gt;&lt;li style=&quot; margin-top:0px; margin-bottom:5px; margin-left:10px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;‘identity’, no-op activation, useful to implement linear bottleneck, returns f(x) = x&lt;/li&gt;&lt;li style=&quot; margin-top:0px; margin-bottom:5px; margin-left:10px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;‘logistic’, the logistic sigmoid function, returns f(x) = 1 / (1 + exp(-x)).&lt;/li&gt;&lt;li style=&quot; margin-top:0px; margin-bottom:5px; margin-left:10px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;‘tanh’, the hyperbolic tan function, returns f(x) = tanh(x).&lt;/li&gt;&lt;li style=&quot; margin-top:0px; margin-bottom:5px; margin-left:10px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;‘relu’, the rectified linear unit function, returns f(x) = max(0, x)&lt;/li&gt;&lt;/ul&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="currentText">
-           <string>ReLu</string>
+           <string>ReLU</string>
           </property>
           <item>
            <property name="text">
-            <string>ReLu</string>
+            <string>ReLU</string>
            </property>
           </item>
           <item>
