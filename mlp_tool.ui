@@ -410,7 +410,7 @@ When set to “auto”, batch size is the minimum of 200 or the sample count.</s
         <item row="1" column="0">
          <widget class="QLabel" name="label_5">
           <property name="toolTip">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Tolerance for the optimization.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;When the loss or score is not improving by at least this tolerance,&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;convergence is considered to be reached and training stops.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Tolerance for the optimization. When the loss or score is not improving by at least this tolerance for 10 epochs, convergence is considered to be reached and training stops.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
            <string>Tolerance:</string>
@@ -420,7 +420,7 @@ When set to “auto”, batch size is the minimum of 200 or the sample count.</s
         <item row="1" column="1">
          <widget class="QLineEdit" name="LineTol">
           <property name="toolTip">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Tolerance for the optimization.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;When the loss or score is not improving by at least this tolerance,&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;convergence is considered to be reached and training stops.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Tolerance for the optimization. When the loss or score is not improving by at least this tolerance for 10 epochs, convergence is considered to be reached and training stops.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
            <string>1e-4</string>
@@ -430,7 +430,7 @@ When set to “auto”, batch size is the minimum of 200 or the sample count.</s
         <item row="2" column="0">
          <widget class="QLabel" name="label_6">
           <property name="toolTip">
-           <string>Determines random number generation for weights and bias initialization and batch sampling when solver=’sgd’ or ‘adam’. Pass an int for reproducible results across multiple function calls.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Determines random number generation for weights and bias initialization and batch sampling when solver=’sgd’ or ‘adam’. Pass an int for reproducible results across multiple function calls.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
            <string>Random state:</string>
@@ -440,7 +440,7 @@ When set to “auto”, batch size is the minimum of 200 or the sample count.</s
         <item row="2" column="1">
          <widget class="QLineEdit" name="LineSeed">
           <property name="toolTip">
-           <string>Determines random number generation for weights and bias initialization and batch sampling when solver=’sgd’ or ‘adam’. Pass an int for reproducible results across multiple function calls.</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Determines random number generation for weights and bias initialization and batch sampling when solver=’sgd’ or ‘adam’. Pass an int for reproducible results across multiple function calls.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="text">
            <string>0</string>

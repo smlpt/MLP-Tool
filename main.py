@@ -56,7 +56,7 @@ from pandas import DataFrame, read_excel, to_numeric, ExcelWriter
 import matplotlib.pyplot as plt
 # Provide fancier plot designs
 from seaborn import set_style, lineplot
-from numpy import array
+from numpy import array, array2string
 from math import sqrt
 
 # Methods for training the network
@@ -85,26 +85,31 @@ def main():
         'Documentation_EN.html',
         'dark.qss'
     ]
+    # Initialise variable to check if file is missing 
+    missing_file = False
     # Check if all files are present
     for file in files:
         if not os.path.exists(file):
-            # Create messagebox and populate it with text
-            message = QMessageBox()
-            message.setIcon(QMessageBox.Warning)
-            message.setWindowTitle("Warning")
-            message.setText(
-                "One or more program files could not be found,\n"
-                "the program might not work as intended.\n"
-                "Try downloading the program again.")
-            message.setStandardButtons(QMessageBox.Ignore | QMessageBox.Abort)
-            # Show messagebox and await user response
-            ReturnValue = message.exec_()
-            # Exit program if user clicked "abort"
-            if ReturnValue == QMessageBox.Abort:
-                exit()
-            # Continue to main GUI when user clicked "ignore"
-            if ReturnValue == QMessageBox.Ignore:
-                break
+            missing_file = True
+    # If one or more files are missing:
+    if missing_file:
+        # Create messagebox and populate it with text
+        message = QMessageBox()
+        message.setIcon(QMessageBox.Warning)
+        message.setWindowTitle("Warning")
+        message.setText(
+            "One or more program files could not be found,\n"
+            "the program might not work as intended.\n"
+            "Try downloading the program again.")
+        message.setStandardButtons(QMessageBox.Ignore | QMessageBox.Abort)
+        # Show messagebox and await user response
+        ReturnValue = message.exec_()
+        # Exit program if user clicked "abort"
+        if ReturnValue == QMessageBox.Abort:
+            exit()
+        # Continue to main GUI when user clicked "ignore"
+        if ReturnValue == QMessageBox.Ignore:
+            pass
 
     # Create an instance of the interface class
     window = GUI()    
@@ -465,9 +470,6 @@ class GUI(QMainWindow):
         self.ButtonSave.clicked.connect(self.SaveModel)
         self.ButtonClose.clicked.connect(self.close)
 
-        # Scaler status, prevents scaling twice. Is set to True after scaler is applied
-        self.is_scaled = False
-        
 
     # Exit function
     def close(self):        
@@ -590,9 +592,9 @@ class GUI(QMainWindow):
         data = DataFrame(self.minmaxscaler.fit_transform(data))
         print(
             f"--------------------\n"
-            f"Applied scaling with factors: {1/self.minmaxscaler.scale_} "
-            f"and minimum values: {self.minmaxscaler.data_min_}\n"
-            f"To scale back: multiply the target column with the factor and add the minimum value."
+            f"Applied scaling with factors: {array2string(1/self.minmaxscaler.scale_, precision=5, separator=', ')}\n"
+            f"and minimum values: {array2string(self.minmaxscaler.data_min_, precision=5, separator=', ')}\n"
+            f"To scale back: multiply the target column with the factor, then add the minimum value."
         )
         return data
 
@@ -616,7 +618,7 @@ class GUI(QMainWindow):
             QMessageBox.critical(self, "Error", "Failed to open file.")
             raise ImportError("Failed to open file")
         # Return error message when file is empty
-        if data.empty == True:
+        if data.empty:
             QMessageBox.warning(self, "Error", "Data file cannot be empty!")
             raise ImportError("Data file cannot be empty")
         # Return error message when file has <2 columns
@@ -629,6 +631,10 @@ class GUI(QMainWindow):
         data = data[data[0].apply(lambda x: isinstance(x, (float, int)))]
         # If the header row was dropped, the DataFrame type is an object. Convert to float:
         data = data.apply(to_numeric)
+
+        # Loading a new dataset always reverts to an unscaled state
+        self.is_scaled = False
+
         return Address, data
         
 
@@ -704,12 +710,12 @@ class GUI(QMainWindow):
             return
 
         # Apply scaling if specified
-        if self.is_scaled == False and self.CheckScaling.isChecked():
+        if not self.is_scaled and self.CheckScaling.isChecked():
             self.DFtrain = self.scaling(self.DFtrain_import)
             # Apply scaler to the test data (the scaler is only fitted to training data)
             self.DFtest = DataFrame(self.minmaxscaler.transform(self.DFtest_import))
             self.is_scaled = True
-        elif self.CheckScaling.isChecked() == False:
+        elif not self.CheckScaling.isChecked():
             self.DFtrain = self.DFtrain_import
             self.DFtest = self.DFtest_import
             self.is_scaled = False
@@ -833,7 +839,7 @@ class GUI(QMainWindow):
         ax.set_ylabel('X2')
         ax.set_zlabel('Y')
         ax.set_proj_type('ortho')
-        plt.title("Error Curve")
+        plt.title("Model Test")
         plt.tight_layout(pad=1)
         
     
@@ -904,7 +910,7 @@ class GUI(QMainWindow):
         Address = QFileDialog.getSaveFileName(self,"Save model","","PMML Files (*.pmml)", options=options)
 
         # Add scaler to the pipeline if scaling is enabled
-        if self.is_scaled == True:
+        if self.is_scaled:
             pipe = Pipeline([
                 ("scaler", self.minmaxscaler),
                 ("model", self.mlp)
