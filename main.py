@@ -37,8 +37,7 @@ from PyQt5.QtWidgets import (
     QAbstractScrollArea,# Needed to resize the table widget
     QSizePolicy,        # Adjust dynamic size of widgets and windows
     QMessageBox,        # Show error messages
-    QPushButton,        # Generic button type
-    QWidget
+    QPushButton         # Generic button type
 )
 from PyQt5.QtGui import (
     QFont,              # Change font parameters
@@ -65,7 +64,7 @@ from sklearn.metrics import mean_squared_error, r2_score, mean_absolute_error
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import MinMaxScaler
 
-# FIX FOR PMML44 NOT FOUND in pyinstaller: Add nyoka folder as --paths= argument
+#! Fix for "PMML44 NOT FOUND in pyinstaller": Add nyoka folder as --paths= argument
 from nyoka import skl_to_pmml
 
 # Open Documentation in browser
@@ -75,7 +74,8 @@ import webbrowser
 # Main Function
 def main():
 
-    app = QApplication(sys.argv)    # Create an instance of QtWidgets.QApplication 
+    # Create an instance of QtWidgets.QApplication 
+    app = QApplication(sys.argv)    
 
     # Create list for all necessary files
     files = [
@@ -103,12 +103,12 @@ def main():
             "Try downloading the program again.")
         message.setStandardButtons(QMessageBox.Ignore | QMessageBox.Abort)
         # Show messagebox and await user response
-        ReturnValue = message.exec_()
+        returnvalue = message.exec_()
         # Exit program if user clicked "abort"
-        if ReturnValue == QMessageBox.Abort:
+        if returnvalue == QMessageBox.Abort:
             exit()
         # Continue to main GUI when user clicked "ignore"
-        if ReturnValue == QMessageBox.Ignore:
+        if returnvalue == QMessageBox.Ignore:
             pass
 
     # Create an instance of the interface class
@@ -128,7 +128,7 @@ class StatDialog(QDialog):
         self.setWindowTitle("Model Statistics")
         self.setStyleSheet(style)
         # Load icon from main GUI
-        self.setWindowIcon(GUI().SetIcon())
+        self.setWindowIcon(GUI().set_icon())
 
         # The statistics dialog contains two column pairs, for training and for test statistics.
         layout = QHBoxLayout()
@@ -184,7 +184,7 @@ class WeightDialog(QDialog):
         self.setWindowTitle("Weights and Bias")
         self.setStyleSheet(style)
         # Load icon from main GUI
-        self.setWindowIcon(GUI().SetIcon())
+        self.setWindowIcon(GUI().set_icon())
         # Store mlp variable as attribute
         self.mlp = mlp
         # Initialize main layout
@@ -305,7 +305,7 @@ class WeightDialog(QDialog):
         # Add "Save" button
         SaveMatrixButton = QPushButton("Save Matrices")
         # Connect "SaveMatrix" method to click event
-        SaveMatrixButton.clicked.connect(self.SaveMatrix)
+        SaveMatrixButton.clicked.connect(self.save_matrix)
         sublayoutR.addWidget(SaveMatrixButton, alignment=Qt.AlignBottom)
         
         # Add weight table and bias table to layout
@@ -316,18 +316,18 @@ class WeightDialog(QDialog):
         self.adjustSize()
 
     # Method for saving the weight/bias tables as excel file
-    def SaveMatrix(self):
+    def save_matrix(self):
 
         options = QFileDialog.Options()
-        Address = QFileDialog.getSaveFileName(
+        address = QFileDialog.getSaveFileName(
             self,"Save Matrix","","Excel Files (*.xlsx)", options=options)
 
         # Return immediately if address is empty (user clicked "cancel")
-        if Address[0] == '':
+        if address[0] == '':
             return
 
         # Create writer object that contains all excel data before being saved
-        writer = ExcelWriter(Address[0], engine='xlsxwriter')   
+        writer = ExcelWriter(address[0], engine='xlsxwriter')   
 
         # Create workbook and worksheet
         workbook = writer.book
@@ -377,7 +377,7 @@ class WeightDialog(QDialog):
             
         # Save writer object to file
         writer.save()
-        print(f"Saved matrices to {Address[0]}.")
+        print(f"Saved matrices to {address[0]}.")
 
 
 # Class containing the "About" dialog
@@ -390,7 +390,7 @@ class AboutDialog(QDialog):
         self.setWindowTitle("About")
         self.setStyleSheet(style)
         # Load icon from main GUI
-        self.setWindowIcon(GUI().SetIcon())
+        self.setWindowIcon(GUI().set_icon())
         # Initialize main layout
         layout = QVBoxLayout()
 
@@ -448,26 +448,26 @@ class GUI(QMainWindow):
         # Save the default theme to revert back to it later
         self.DefaultStyle = self.styleSheet()
         # Add window icon from file
-        self.setWindowIcon(self.SetIcon())
+        self.setWindowIcon(self.set_icon())
         
         # Connectors for user input events, e.g. pressing buttons
-        self.ButtonLoadTrain.clicked.connect(self.OpenTrainData)
-        self.ButtonLoadTest.clicked.connect(self.OpenTestData)
-        self.actionOpenTrain.triggered.connect(self.OpenTrainData)
-        self.actionOpenTest.triggered.connect(self.OpenTestData)
+        self.ButtonLoadTrain.clicked.connect(self.opentraindata)
+        self.ButtonLoadTest.clicked.connect(self.opentestdata)
+        self.actionOpenTrain.triggered.connect(self.opentraindata)
+        self.actionOpenTest.triggered.connect(self.opentestdata)
         self.actionClose.triggered.connect(self.close)
-        self.actionTheme.triggered.connect(self.SetStyle)
-        self.actionDocEN.triggered.connect(self.OpenDocsEN)
-        self.actionDocDE.triggered.connect(self.OpenDocsDE)
-        self.actionAbout.triggered.connect(self.ShowAbout)
-        self.ButtonTrain.clicked.connect(self.Train)
-        self.ButtonLossCurve.clicked.connect(self.LossCurve)
-        self.ButtonTest.clicked.connect(self.PlotResults)
-        self.ButtonTestError.clicked.connect(self.PlotDeviation)
-        self.ComboSolver.activated.connect(self.checkSolver)
-        self.ButtonStats.clicked.connect(self.ShowStats)
-        self.ButtonWeights.clicked.connect(self.ShowWeights)
-        self.ButtonSave.clicked.connect(self.SaveModel)
+        self.actionTheme.triggered.connect(self.set_style)
+        self.actionDocEN.triggered.connect(self.open_docsEN)
+        self.actionDocDE.triggered.connect(self.open_docsDE)
+        self.actionAbout.triggered.connect(self.show_about)
+        self.ButtonTrain.clicked.connect(self.train)
+        self.ButtonLossCurve.clicked.connect(self.loss_curve)
+        self.ButtonTest.clicked.connect(self.plot_results)
+        self.ButtonTestError.clicked.connect(self.plot_deviation)
+        self.ComboSolver.activated.connect(self.check_solver)
+        self.ButtonStats.clicked.connect(self.show_stats)
+        self.ButtonWeights.clicked.connect(self.show_weights)
+        self.ButtonSave.clicked.connect(self.save_model)
         self.ButtonClose.clicked.connect(self.close)
 
 
@@ -478,7 +478,7 @@ class GUI(QMainWindow):
     
 
     # Switch between Light and Dark theme (in Menu -> View)
-    def SetStyle(self):
+    def set_style(self):
         if self.actionTheme.text() == "Dark Theme":
             self.setStyleSheet(open("dark.qss").read())
             self.actionTheme.setText("Light Theme")
@@ -490,24 +490,24 @@ class GUI(QMainWindow):
 
     
     # Load window icon from file
-    def SetIcon(self):
+    def set_icon(self):
         return QIcon("MLP_Tool_Icon_V2_64.png")
 
 
     # Open english documentation in a new browser tab
-    def OpenDocsEN(self):
+    def open_docsEN(self):
         
         webbrowser.open_new_tab("Documentation_EN.html")
 
 
     # Open german documentation in a new browser tab
-    def OpenDocsDE(self):
+    def open_docsDE(self):
     
         webbrowser.open_new_tab("Documentation_DE.html")
 
 
     # Writes configuration data from line inputs and comboboxes into attributes
-    def getConfig(self):        
+    def get_config(self):        
 
         # Dictionary to convert the combobox strings to activation parameters
         ActivationDict = {             
@@ -528,41 +528,41 @@ class GUI(QMainWindow):
             self.LineLearnRate
         )
         # Raise a warning when one of the input fields is empty and abort the method 
-        for Line in InputList:
-            if Line.text() == '':
+        for line in InputList:
+            if line.text() == '':
                 raise ValueError("Configuration must not be empty.")
 
         # Raise error if writing to the correct data type fails
         try:
-            self.HiddenLayers = eval(self.LineLayers.text())
-            self.Solver = self.ComboSolver.currentText()
+            self.hiddenlayers = eval(self.LineLayers.text())
+            self.solver = self.ComboSolver.currentText()
             # Access the dictionary
-            self.Activation = ActivationDict[self.ComboActivation.currentText()]  
-            self.MaxEp = int(self.LineMaxEps.text())
-            self.Tol = float(self.LineTol.text())
-            self.Seed = int(self.LineSeed.text())
+            self.activation = ActivationDict[self.ComboActivation.currentText()]  
+            self.maxEp = int(self.LineMaxEps.text())
+            self.tol = float(self.LineTol.text())
+            self.seed = int(self.LineSeed.text())
             self.L2 = float(self.LineL2.text())
-            self.Momentum = float(self.LineMomentum.text())
+            self.momentum = float(self.LineMomentum.text())
             # Try to evaluate batch value as integer
             try:
-                self.Batch = eval(self.LineBatch.text())
+                self.batch = eval(self.LineBatch.text())
             # If batch does not contain an int, write it as a string
             except:
-                self.Batch = self.LineBatch.text()
-            self.LearnRate = float(self.LineLearnRate.text())
+                self.batch = self.LineBatch.text()
+            self.learnrate = float(self.LineLearnRate.text())
         except:
             raise TypeError("Input data of wrong file type.")
 
 
     # Change configuration fields based on the selected solver
     # Method is called when the solver combobox changes
-    def checkSolver(self):              
+    def check_solver(self):              
         
         # Get current solver configuration
-        self.Solver = self.ComboSolver.currentText()
+        self.solver = self.ComboSolver.currentText()
 
         # Disable loss curve, learning rate and batch size for LBFGS
-        if self.Solver == "lbfgs":      
+        if self.solver == "lbfgs":      
             self.ButtonLossCurve.setEnabled(False)
             self.LineLearnRate.setEnabled(False)
             self.LineBatch.setEnabled(False)
@@ -576,7 +576,7 @@ class GUI(QMainWindow):
             self.LineBatch.setEnabled(True)
         
         # Enable momentum for SGD
-        if self.Solver == "sgd":       
+        if self.solver == "sgd":       
             self.LineMomentum.setEnabled(True)
         else:
             self.LineMomentum.setEnabled(False)
@@ -600,20 +600,20 @@ class GUI(QMainWindow):
 
 
     # Open a dataset file, check its integrity and return address and data
-    def InputDataDialog(self):
+    def inputdatadialog(self):
 
         options = QFileDialog.Options()
-        Address = QFileDialog.getOpenFileName(
+        address = QFileDialog.getOpenFileName(
                             self,"Select data", "","Excel Files (*.xlsx)", options=options)
 
         # Return with basic error if address is empty (user clicked "cancel")
         # Needed to catch the exception in dependent methods
-        if Address[0] == '':
+        if address[0] == '':
             raise BaseException
 
         # Write data from excel file to local variable
         try:      
-            data = read_excel(Address[0], header=None, engine='openpyxl')
+            data = read_excel(address[0], header=None, engine='openpyxl')
         except:
             QMessageBox.critical(self, "Error", "Failed to open file.")
             raise ImportError("Failed to open file")
@@ -635,15 +635,15 @@ class GUI(QMainWindow):
         # Loading a new dataset always reverts to an unscaled state
         self.is_scaled = False
 
-        return Address, data
+        return address, data
         
 
     # Open the training data and save its feature count in an attribute
-    def OpenTrainData(self):      
+    def opentraindata(self):      
 
         # Open dialog, write data to attribute
         try:
-            Address, self.DFtrain_import = self.InputDataDialog()
+            address, self.DFtrain_import = self.inputdatadialog()
         except ImportError:
             print("Failed to open training data.")
             return
@@ -653,24 +653,24 @@ class GUI(QMainWindow):
 
         # Write address to line
         self.LineTrain.setEnabled(True)
-        self.LineTrain.setText(Address[0])
+        self.LineTrain.setText(address[0])
         # Save feature count (-1 to subtract the output column)
-        self.Features = self.DFtrain_import.shape[1] - 1
-        print(f"Loaded {self.DFtrain_import.shape[0]} training data points from {Address[0]}:")
+        self.features = self.DFtrain_import.shape[1] - 1
+        print(f"Loaded {self.DFtrain_import.shape[0]} training data points from {address[0]}:")
         # Print a data preview in console view
         print(self.DFtrain_import.head())
-        self.statusBar.showMessage(f"Loaded training data from {Address[0]}", 3000)
+        self.statusBar.showMessage(f"Loaded training data from {address[0]}", 3000)
         # Enable Train button when both datasets are loaded
         if  hasattr(self, 'DFtest_import'):
             self.ButtonTrain.setEnabled(True)    
 
 
     # Open the test data
-    def OpenTestData(self):       
+    def opentestdata(self):       
 
         # Open dialog, write data to attribute
         try:
-            Address, self.DFtest_import = self.InputDataDialog()
+            address, self.DFtest_import = self.inputdatadialog()
         except ImportError:
             print("Failed to open training data.")
             return
@@ -679,11 +679,11 @@ class GUI(QMainWindow):
 
         # Write address to line   
         self.LineTest.setEnabled(True)
-        self.LineTest.setText(Address[0])
-        print(f"Loaded {self.DFtest_import.shape[0]} test data points from {Address[0]}:")
+        self.LineTest.setText(address[0])
+        print(f"Loaded {self.DFtest_import.shape[0]} test data points from {address[0]}:")
         # Print a data preview in console view
         print(self.DFtest_import.head())
-        self.statusBar.showMessage(f"Loaded test data from {Address[0]}", 3000)
+        self.statusBar.showMessage(f"Loaded test data from {address[0]}", 3000)
         # Enable Train button when both datasets are loaded
         if hasattr(self, 'DFtrain_import'):
             self.ButtonTrain.setEnabled(True) 
@@ -691,12 +691,12 @@ class GUI(QMainWindow):
 
     # Method for training the model
     # Calls the scaling method if scaling is enabled and checks for data integrity before training.
-    def Train(self):
+    def train(self):
 
         # Get configuration parameters and check if configuration is empty or of incorrect type
         # Abort training method when an error is encountered
         try:
-            self.getConfig()
+            self.get_config()
         except ValueError:
             QMessageBox.warning(self, "Warning", "Configuration must not be empty.")
             return
@@ -722,36 +722,36 @@ class GUI(QMainWindow):
             
         # Write train and test dataframes into separate variables.
         # Scikit-Learn takes numpy arrays as input, but excel import returns a pandas DataFrame
-        self.Xtrain = self.DFtrain.drop(self.DFtrain.columns[self.Features], axis=1).to_numpy()
-        self.Ytrain = self.DFtrain[self.Features]
-        self.Xtest = self.DFtest.drop(self.DFtest.columns[self.Features], axis=1).to_numpy()
-        self.Ytest = self.DFtest[self.Features]
+        self.Xtrain = self.DFtrain.drop(self.DFtrain.columns[self.features], axis=1).to_numpy()
+        self.Ytrain = self.DFtrain[self.features]
+        self.Xtest = self.DFtest.drop(self.DFtest.columns[self.features], axis=1).to_numpy()
+        self.Ytest = self.DFtest[self.features]
 
         print(
             "--------------------\n"
             "Started training with:\n"
-            f"Layers: {self.HiddenLayers}\n"
+            f"Layers: {self.hiddenlayers}\n"
             # f"Activation: {self.Activation}\n"
             # f"Solver: {self.Solver}\n"
-            f"Max. Epochs: {self.MaxEp}\n"
-            f"Stopping Tolerance: {self.Tol}"
+            f"Max. Epochs: {self.maxEp}\n"
+            f"Stopping Tolerance: {self.tol}"
             # f"Random Seed: {self.Seed}"
         )
 
         # Create MLP model with the given configuration
         try:
             self.mlp = MLPRegressor(        
-                hidden_layer_sizes = self.HiddenLayers,
-                solver = self.Solver,
-                activation = self.Activation,
-                max_iter = self.MaxEp,
-                tol = self.Tol,
-                random_state = self.Seed,
+                hidden_layer_sizes = self.hiddenlayers,
+                solver = self.solver,
+                activation = self.activation,
+                max_iter = self.maxEp,
+                tol = self.tol,
+                random_state = self.seed,
                 alpha = self.L2,
-                momentum = self.Momentum,
-                batch_size=self.Batch,
+                momentum = self.momentum,
+                batch_size=self.batch,
                 # not learn_rate, which only takes ‘constant’, ‘invscaling’, ‘adaptive’
-                learning_rate_init=self.LearnRate
+                learning_rate_init=self.learnrate
             )
         except:
             # Return with an error if model initialization failed
@@ -787,9 +787,9 @@ class GUI(QMainWindow):
         )
 
         # Enable buttons that require a trained model
-        if self.Solver != "lbfgs":
+        if self.solver != "lbfgs":
             self.ButtonLossCurve.setEnabled(True)
-        if self.Features == 2:
+        if self.features == 2:
             self.ButtonTest.setEnabled(True)
         self.ButtonTestError.setEnabled(True)
         self.ButtonSave.setEnabled(True)
@@ -798,7 +798,7 @@ class GUI(QMainWindow):
 
 
     # Print loss curve
-    def LossCurve(self):        
+    def loss_curve(self):        
         
         # Enable matplotlib interactive mode
         plt.ion()
@@ -812,7 +812,7 @@ class GUI(QMainWindow):
 
 
     # Predict values for training and test data
-    def Predict(self):
+    def predict(self):
 
         self.predtest = self.mlp.predict(self.Xtest)
         self.predtrain = self.mlp.predict(self.Xtrain)
@@ -820,10 +820,10 @@ class GUI(QMainWindow):
 
     # Predict values for training and test data and print as point cloud
     # This method is only activated for datasets with 2D input
-    def PlotResults(self):     
+    def plot_results(self):     
 
         # Get prediction values
-        self.Predict()        
+        self.predict()        
 
         # Enable matplotlib interactive mode
         plt.ion()
@@ -844,20 +844,20 @@ class GUI(QMainWindow):
         
     
     # Calculate the deviation of prediction from target
-    def CalculateDeviation(self):
+    def calculate_deviation(self):
 
         # Get prdiction values
-        self.Predict()
+        self.predict()
 
-        self.errortrain = self.predtrain - array(self.DFtrain[self.Features])
-        self.errortest = self.predtest - array(self.DFtest[self.Features])
+        self.errortrain = self.predtrain - array(self.DFtrain[self.features])
+        self.errortest = self.predtest - array(self.DFtest[self.features])
         
 
     # Plot prediction deviation as lineplot (Error curve)
-    def PlotDeviation(self):        
+    def plot_deviation(self):        
 
         # Get deviation values
-        self.CalculateDeviation()
+        self.calculate_deviation()
 
         plt.ion()
         set_style("whitegrid")
@@ -873,41 +873,41 @@ class GUI(QMainWindow):
 
 
     # Open statistics dialog
-    def ShowStats(self):
+    def show_stats(self):
 
         # Get deviation data
-        self.CalculateDeviation()
+        self.calculate_deviation()
         # Create statistics dialog instance and pass data
-        Dialog = StatDialog(
+        dialog = StatDialog(
             self.Ytrain, self.Ytest,
             self.predtrain, self.predtest,
             self.errortrain, self.errortest,
             self.styleSheet()
         )
-        Dialog.exec_()
+        dialog.exec_()
 
 
     # Open weights/bias dialog
-    def ShowWeights(self):
+    def show_weights(self):
 
         # Create instance of class WeightDialog
-        Dialog = WeightDialog(self.mlp, self.styleSheet())
-        Dialog.exec_()
+        dialog = WeightDialog(self.mlp, self.styleSheet())
+        dialog.exec_()
 
 
     # Open About dialog
-    def ShowAbout(self):
+    def show_about(self):
 
         # Create instance of About dialog and pass the style
-        Dialog = AboutDialog(self.styleSheet())
-        Dialog.exec_()
+        dialog = AboutDialog(self.styleSheet())
+        dialog.exec_()
 
 
     # Open file dialog and save model as PMML file
-    def SaveModel(self):      
+    def save_model(self):      
 
         options = QFileDialog.Options()
-        Address = QFileDialog.getSaveFileName(self,"Save model","","PMML Files (*.pmml)", options=options)
+        address = QFileDialog.getSaveFileName(self,"Save model","","PMML Files (*.pmml)", options=options)
 
         # Add scaler to the pipeline if scaling is enabled
         if self.is_scaled:
@@ -922,13 +922,13 @@ class GUI(QMainWindow):
         
         # Create string array for column names
         col_names = []
-        for i in range(self.Features):
+        for i in range(self.features):
             col_names.append(f'X{i+1}')
 
         # Write pipeline to PMML file
-        if Address[0] != '':
-            skl_to_pmml(pipeline=pipe, col_names=col_names, target_name='Y',  pmml_f_name=Address[0])
-            print(f"Saved MLP model to {Address[0]}")
+        if address[0] != '':
+            skl_to_pmml(pipeline=pipe, col_names=col_names, target_name='Y',  pmml_f_name=address[0])
+            print(f"Saved MLP model to {address[0]}")
 
 
 
