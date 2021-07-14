@@ -1,6 +1,6 @@
 # MLP-Tool
 
-This project aims to add a graphical user interface to the scikit-learn [MLPRegressor method](https://scikit-learn.org/stable/modules/generated/sklearn.neural_network.MLPRegressor.html)
+This project adds a graphical user interface to the scikit-learn [MLPRegressor method](https://scikit-learn.org/stable/modules/generated/sklearn.neural_network.MLPRegressor.html)
 and can be used to train simple MLP networks from training and test datasets.
 The finished network can be exported as PMML file.
 It was developed during my internship semester at the IPM institute from the University of Applied Sciences (HSZG).
