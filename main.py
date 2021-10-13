@@ -410,7 +410,7 @@ class AboutDialog(QDialog):
         # Add text
         labeltext.setText(
             "<b>MLP Tool</b><br>"
-            "Version 1.1<br><br>"
+            "Version 1.2<br><br>"
             "This software is used to train simple MLP regression models<br>"
             "and export them as PMML file.<br><br>"
             "Copyright:<br>"
@@ -460,6 +460,7 @@ class GUI(QMainWindow):
         self.actionDocEN.triggered.connect(self.open_docsEN)
         self.actionDocDE.triggered.connect(self.open_docsDE)
         self.actionAbout.triggered.connect(self.show_about)
+        self.ButtonShowDataset.clicked.connect(self.show_dataset)
         self.ButtonTrain.clicked.connect(self.train)
         self.ButtonLossCurve.clicked.connect(self.loss_curve)
         self.ButtonTest.clicked.connect(self.plot_results)
@@ -631,6 +632,8 @@ class GUI(QMainWindow):
         data = data[data[0].apply(lambda x: isinstance(x, (float, int)))]
         # If the header row was dropped, the DataFrame type is an object. Convert to float:
         data = data.apply(to_numeric)
+        # Drop any columns with NaN values (can happen if empty cells contain formatting)
+        data.dropna(axis=1, inplace=True)
 
         # Loading a new dataset always reverts to an unscaled state
         self.is_scaled = False
@@ -662,7 +665,12 @@ class GUI(QMainWindow):
         self.statusBar.showMessage(f"Loaded training data from {address[0]}", 3000)
         # Enable Train button when both datasets are loaded
         if  hasattr(self, 'DFtest_import'):
-            self.ButtonTrain.setEnabled(True)    
+            self.ButtonTrain.setEnabled(True)
+            # Enable "Show Dataset" button if feature count is 2
+            if self.features == 2:
+                self.ButtonShowDataset.setEnabled(True) 
+            else:
+                self.ButtonShowDataset.setEnabled(False)
 
 
     # Open the test data
@@ -686,7 +694,33 @@ class GUI(QMainWindow):
         self.statusBar.showMessage(f"Loaded test data from {address[0]}", 3000)
         # Enable Train button when both datasets are loaded
         if hasattr(self, 'DFtrain_import'):
-            self.ButtonTrain.setEnabled(True) 
+            self.ButtonTrain.setEnabled(True)
+            # Enable "Show Dataset" button if feature count is 2
+            if self.features == 2:
+                self.ButtonShowDataset.setEnabled(True)
+            else:
+                self.ButtonShowDataset.setEnabled(False)
+
+    
+    # Plot input dataset
+    def show_dataset(self):
+
+        # Enable matplotlib interactive mode
+        plt.ion()
+        set_style("whitegrid")
+        # Set projection type
+        ax = plt.axes(projection='3d')
+        ax.scatter(self.DFtrain_import[0], self.DFtrain_import[1],
+            self.DFtrain_import[2], color="darkblue")
+        ax.scatter(self.DFtest_import[0], self.DFtest_import[1],
+            self.DFtest_import[2], color="cornflowerblue")     
+        plt.legend(['Train Target', 'Test Target'])
+        ax.set_xlabel('X1')
+        ax.set_ylabel('X2')
+        ax.set_zlabel('Y')
+        ax.set_proj_type('ortho')
+        plt.title("Dataset")
+        plt.tight_layout(pad=1)
 
 
     # Method for training the model
@@ -831,7 +865,7 @@ class GUI(QMainWindow):
         # Set projection type
         ax = plt.axes(projection='3d')
         ax.scatter(self.DFtrain[0], self.DFtrain[1], self.DFtrain[2], color="darkblue")
-        ax.scatter(self.DFtest[0], self.DFtest[1], self.DFtest[2], color="royalblue")
+        ax.scatter(self.DFtest[0], self.DFtest[1], self.DFtest[2], color="cornflowerblue")
         ax.scatter(self.DFtrain[0], self.DFtrain[1], self.predtrain, color="darkred")
         ax.scatter(self.DFtest[0], self.DFtest[1], self.predtest, color="indianred")      
         plt.legend(['Train Target', 'Test Target', 'Train Prediction', 'Test Prediction'])
