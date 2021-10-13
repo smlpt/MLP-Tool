@@ -22,4 +22,3 @@ The Python script can be run directly, but requires a Python installation and al
 To deploy the MLP Tool to a wider range on computers, it should be packaged with PyInstaller from a dedicated virtual environment that contains the following packages:
 
 ```pyinstaller,  sys,  time,  pyqt5,  pandas,  matplotlib,  seaborn, numpy,  math,  scikit-learn,  nyoka,  openpyxl,  webbrowser,  xlsxwriter```
-
