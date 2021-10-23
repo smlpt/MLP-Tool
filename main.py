@@ -661,7 +661,7 @@ class GUI(QMainWindow):
         self.features = self.DFtrain_import.shape[1] - 1
         print(f"Loaded {self.DFtrain_import.shape[0]} training data points from {address[0]}:")
         # Print a data preview in console view
-        print(self.DFtrain_import.head())
+        print(self.DFtrain_import.head(), "\n")
         self.statusBar.showMessage(f"Loaded training data from {address[0]}", 3000)
         # Enable Train button when both datasets are loaded
         if  hasattr(self, 'DFtest_import'):
@@ -690,7 +690,7 @@ class GUI(QMainWindow):
         self.LineTest.setText(address[0])
         print(f"Loaded {self.DFtest_import.shape[0]} test data points from {address[0]}:")
         # Print a data preview in console view
-        print(self.DFtest_import.head())
+        print(self.DFtest_import.head(), "\n")
         self.statusBar.showMessage(f"Loaded test data from {address[0]}", 3000)
         # Enable Train button when both datasets are loaded
         if hasattr(self, 'DFtrain_import'):
@@ -761,12 +761,20 @@ class GUI(QMainWindow):
         self.Xtest = self.DFtest.drop(self.DFtest.columns[self.features], axis=1).to_numpy()
         self.Ytest = self.DFtest[self.features]
 
+        print("--------------------")
+
+        # Log scaling parameters
+        if self.is_scaled:
+            print(
+                f"Scale factor: {array2string(1/self.minmaxscaler.scale_[self.features], precision=5)} "
+                f"and minimum value: {array2string(self.minmaxscaler.data_min_[self.features], precision=5)}\n")
+        
+        # Log training parameters
         print(
-            "--------------------\n"
             "Started training with:\n"
             f"Layers: {self.hiddenlayers}\n"
-            # f"Activation: {self.Activation}\n"
-            # f"Solver: {self.Solver}\n"
+            f"Activation: {self.activation}\n"
+            # f"Solver: {self.solver}\n"
             f"Max. Epochs: {self.maxEp}\n"
             f"Stopping Tolerance: {self.tol}"
             # f"Random Seed: {self.Seed}"
@@ -783,9 +791,9 @@ class GUI(QMainWindow):
                 random_state = self.seed,
                 alpha = self.L2,
                 momentum = self.momentum,
-                batch_size=self.batch,
+                batch_size = self.batch,
                 # not learn_rate, which only takes ‘constant’, ‘invscaling’, ‘adaptive’
-                learning_rate_init=self.learnrate
+                learning_rate_init = self.learnrate
             )
         except:
             # Return with an error if model initialization failed
@@ -961,9 +969,12 @@ class GUI(QMainWindow):
 
         # Write pipeline to PMML file
         if address[0] != '':
-            skl_to_pmml(pipeline=pipe, col_names=col_names, target_name='Y',  pmml_f_name=address[0])
-            print(f"Saved MLP model to {address[0]}")
-
+            try:
+                skl_to_pmml(pipeline=pipe, col_names=col_names, target_name='Y',  pmml_f_name=address[0])
+                print(f"Saved MLP model to {address[0]}")
+            except:
+                print("\nError while saving model.\n"
+                "If only one hidden layer exists, try adding another layer with 1 neuron.")
 
 
 # Calling main loop to start the program
