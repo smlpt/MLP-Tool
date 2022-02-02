@@ -8,7 +8,7 @@ It was developed during my internship semester at the IPM institute from the Uni
 ## Main features
 
 - Import of Excel files
-- Configuration of the most relevant hyperparameters
+- Configuration of relevant hyperparameters
 - Optional per-feature scaling of all input data
 - Evaluation via Matplotlib graphs for loss curve and error values
 - Comparison between prediction and target data as 3D point cloud
