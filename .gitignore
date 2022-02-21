@@ -3,3 +3,4 @@ build
 dist
 *.spec
 __pycache__
+MLP_Tool_compilation_required_libs.txt
